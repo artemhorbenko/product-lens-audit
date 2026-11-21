@@ -1,0 +1,29 @@
+name: Wrong or weak conclusion
+description: The audit picked the wrong constraint, invented something, or gave generic advice
+labels: ["analysis"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem
+      options:
+        - Wrong main constraint
+        - A number or fact is not in the sources (invented)
+        - Advice is generic, not specific to the product
+        - A lens score feels wrong
+        - Recommends a manipulative tactic
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Quote the finding and say why it is wrong. What would the right conclusion be?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Product type and data you gave
+      description: "e.g. B2B SaaS, URL + GA4 screenshots, skipped all questions. No private data, please."

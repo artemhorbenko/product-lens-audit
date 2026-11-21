@@ -19,6 +19,14 @@ Headings state their point ("The journey breaks between teams"), not a topic ("C
 7. **Full plan for every opportunity** - one collapsible row per opportunity, sorted by ICE, top 3 open, plus an "expand all" button. Summary line: number, title, lens, ICE, type, effort, observed/hypothesis badge. Body: **Why it is here** (the evidence: numbers, pages, owner's words), **What to do** (3-5 concrete numbered steps naming the real tools and settings the product uses), **Metric**, **Effort** (hours/days), **Risk / guardrail**. Top 3 also show: alternatives considered, experiment (risk type, success threshold), pre-mortem, and 2 copy variants when the change is about wording. Steps must be specific to this product, not generic advice. Keep this data in one `detail` object keyed by opportunity id.
 8. **Data and confidence** - the source list with statuses, a confidence meter (ok = 1, demo = 0.6, no = 0, averaged), what to connect next, the start questions with their answers; a collapsible glossary of all terms; a collapsible "how this report was made".
 
+## Data shapes and language
+
+- `<html lang="uk|en">` picks the interface labels from the `UI` dictionary in the script (navigation, filters, table heads, plan labels, matrix quadrants, stage names, lens group names). To support another language, add an entry with the same keys.
+- `funnel`: `[{l, n, hot?, note?, sub?}]`. The first item is the base and is not drawn. Use `n: null` when a number is unknown: the step shows a hatched "no data" bar and a dash instead of a rate. Never put a guessed number there.
+- `stage`: `{cur, note}` - `cur` is the index of the current Lean Analytics stage (0 Empathy ... 4 Scale), `note` one sentence on what blocks the next stage.
+- `answers`: `[[question, answer, skipped?]]` - set the third item to `1` when the person skipped the question; the answer then states the assumption taken.
+- `ops`: `{t, l (icon id), ln (lens label), x: "opt"|"ex", ev: "obs"|"hyp", I, C, E}`; ICE and quick wins are computed.
+
 ## Leaks vs target (variant of the header picture)
 
 When the problems are not steps of one funnel (for example search CTR, returning readers and ad deals), replace `funnel` with `leaks` and show each as a rate against a proposed target. Say in the caption that the target is a suggested benchmark, not an industry standard.
@@ -28,8 +36,8 @@ const leaks=[
  {l:"Clicks from Google",v:103,b:6510,t:5,sub:"103 of 6,510 impressions"},
  {l:"Readers who return",v:19,b:358,t:20,sub:"19 of 358"}
 ];
-const pc=x=>(Math.round(x*10)/10)+"%";
-document.getElementById("funnel").innerHTML=leaks.map(f=>{const r=f.v/f.b*100,bw=Math.min(r/f.t,1)*100;return `<div class="step hot"><div class="lab">${f.l}<small>${f.sub}</small></div><div class="track" style="--w:${Math.max(bw,1)}%"><div class="bar" style="width:${bw}%"></div><span class="note">target ${f.t}%</span></div><div class="pct red">${pc(r)}</div></div>`}).join("");
+const pc=x=>(Math.round(x*10)/10).toLocaleString(L.locale)+"%";
+document.getElementById("funnel").innerHTML=leaks.map(f=>{const r=f.v/f.b*100,bw=Math.min(r/f.t,1)*100;return `<div class="step hot"><div class="lab">${f.l}<small>${f.sub}</small></div><div class="track" style="--w:${Math.max(bw,1)}%"><div class="bar" style="width:${bw}%"></div><span class="note">${L.target} ${f.t}%</span></div><div class="pct red">${pc(r)}</div></div>`}).join("");
 ```
 
 ## Tooltips for terms

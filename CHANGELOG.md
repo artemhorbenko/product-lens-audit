@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0 - 2026-11-21
+
+- Report labels in Ukrainian and English: the template picks its `UI` dictionary from `<html lang>`.
+- Funnel "no data" state: steps with `n: null` show a hatched bar instead of invented numbers.
+- `check_report.py` now flags overlapping text labels in the funnel, KPIs and journey.
+- Data shapes documented in `references/report-spec.md`.
+- GitHub issue templates: report bug, wrong conclusion, data source request.
+- Tested on a real site with every start question skipped and no analytics access.
+
 ## 1.0.0 - 2026-11-21
 
 First public release.

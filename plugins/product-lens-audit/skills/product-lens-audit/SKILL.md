@@ -11,7 +11,7 @@ Respond in the user's language, and write the report in it too.
 
 Files next to this SKILL.md:
 - `references/report-spec.md` - the report's sections, look, tooltips and mobile rules. Read it before step 4.
-- `assets/report-template.html` - a finished report (fictional product "Loopwell") to copy and fill. Its fixed labels are in Ukrainian: translate them into the user's language.
+- `assets/report-template.html` - a finished report (fictional product "Loopwell", content in Ukrainian) to copy and fill. Its fixed interface labels come from a built-in dictionary chosen by `<html lang>`: `uk` and `en` exist; for another language, add an entry to `UI` with the same keys.
 - `scripts/check_report.py` - automated render check for step 5.
 
 ## 0. Check which data sources are connected
@@ -107,7 +107,7 @@ Collect all findings into one table:
 
 ## 4. Output: a visual report page
 
-Read `references/report-spec.md`, then copy `assets/report-template.html` and replace only the data at the top of its script (`funnel`, `stage`, `lenses`, `route`, `ops`, `plans`, `detail`, `answers`, `sources`, `kp`, glossary `GL`) and the fixed text (headline, lead, section headings, labels). When the problem steps are not a sequential funnel, use the "leaks vs target" variant described in the spec.
+Read `references/report-spec.md`, then copy `assets/report-template.html`, set `<html lang>` to the report language, and replace only the data at the top of its script (`funnel`, `stage`, `lenses`, `route`, `ops`, `plans`, `detail`, `answers`, `sources`, `kp`, glossary `GL`) and the report's own text (headline, lead, section headings and intros, "how this report was made", footer note). Interface labels translate themselves through `UI`. When the problem steps are not a sequential funnel, use the "leaks vs target" variant described in the spec.
 
 Deliver it as one self-contained HTML page: publish it as an artifact when an artifact tool exists, otherwise save the .html file and send or open it. In chat, reply only with 3-5 summary bullets, the link or file, and one line on what was checked.
 
