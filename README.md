@@ -4,15 +4,34 @@ A Claude skill that audits a digital product - a website, web app, SaaS flow, la
 
 Each lens asks a different question. The value is in seeing what one lens misses:
 
-| Group | Lenses |
-|---|---|
-| Improve the existing system | CRO, Theory of Constraints, Kaizen |
-| Are we solving the right problem? | Jobs to Be Done, continuous discovery, service design |
-| Grow differently | Growth loops, product-led growth, platform / ecosystem |
-| Change the game | Business-model innovation, Blue Ocean |
-| Protect long-term value | Reliability engineering, privacy / ethical design |
+**Live demo:** [English](https://claude.ai/artifact/FyKs3ePt4fFF1xNWq3QDah) · [Ukrainian](https://claude.ai/artifact/NF3ziLaGy95NQbqDwN6AAJ) (fictional product "Loopwell", made-up data).
 
-Supporting tools: Lean Analytics stages, AARRR, LIFT, Value Proposition Canvas, Hook model, HEART, Kano, Cynefin, ICE, opportunity solution tree, pre-mortem.
+### The 13 lenses
+
+| Group | Lens | The question it asks |
+|---|---|---|
+| Improve the existing system | **CRO** (conversion rate optimization) | Where do people drop out, and why? |
+| | **Theory of Constraints** | Which single step limits the whole system right now? |
+| | **Kaizen** | What internal work is slow, manual or error-prone? |
+| Are we solving the right problem? | **Jobs to Be Done** | What progress is the customer really hiring the product for? |
+| | **Continuous discovery** | What evidence loops exist, and what should we ask next? |
+| | **Service design** | Does the whole experience hold together across teams? |
+| Grow differently | **Growth loops** | Does one successful action create the next? |
+| | **Product-led growth** | Can the product itself acquire, activate and expand users? |
+| | **Platform / ecosystem** | Could partners, integrations or network effects add value? |
+| Change the game | **Business-model innovation** | What if delivery, pricing or ownership changed? |
+| | **Blue Ocean** (ERRC) | What to eliminate, reduce, raise or create vs. competitors? |
+| Protect long-term value | **Reliability** | Are critical paths monitored and safe to change? |
+| | **Privacy / ethical design** | Any dark patterns, fake urgency or needless data collection? |
+
+### Supporting concepts
+
+- **Product stage:** Lean Analytics (empathy, stickiness, virality, revenue, scale), AARRR (pirate metrics), North Star metric.
+- **Pages and value:** LIFT model, Value Proposition Canvas, Kano model.
+- **Retention and growth:** Hook model, network effects, loop coefficient and cycle time.
+- **Choosing metrics and approach:** HEART, Cynefin (optimize vs explore), LTV/CAC, incrementality.
+- **Prioritizing and planning:** ICE scoring, observed vs hypothesis labels, opportunity solution tree, experiment risk types (value, usability, viability, feasibility), success thresholds, pre-mortem, instrumentation gaps.
+- **Journey:** service blueprint.
 
 ![Report header: the constraint, KPIs, funnel and product stage](docs/report-desktop.png)
 
@@ -127,6 +146,17 @@ MIT - see [LICENSE](LICENSE).
 ## Українською
 
 **Product Lens Audit** - скіл для Claude, який аналізує цифровий продукт через 13 лінз: CRO, теорія обмежень, Kaizen, JTBD, discovery, service design, петлі росту, PLG, платформа, бізнес-модель, Blue Ocean, надійність і приватність. На виході ви отримуєте візуальний звіт із головним обмеженням, етапом продукту, пріоритизованими можливостями та детальним планом. Біля кожної знахідки є доказ, а кожен термін має підказку.
+
+**Демо-звіт:** [українською](https://claude.ai/artifact/NF3ziLaGy95NQbqDwN6AAJ) · [англійською](https://claude.ai/artifact/FyKs3ePt4fFF1xNWq3QDah) (вигаданий продукт «Loopwell», умовні дані).
+
+**13 лінз у 5 групах:**
+- **Покращити систему:** CRO (де люди відпадають і чому), теорія обмежень (який один крок стримує всю систему), Kaizen (яка внутрішня робота повільна чи ручна).
+- **Чи ту проблему ми розв'язуємо:** Jobs to Be Done (заради якого прогресу клієнт «наймає» продукт), continuous discovery (які є петлі доказів), service design (чи тримається весь досвід між командами).
+- **Рости інакше:** петлі росту (чи запускає одна дія наступну), PLG (чи залучає продукт сам), платформа й екосистема (партнери, інтеграції, мережеві ефекти).
+- **Змінити гру:** інновація бізнес-моделі, Blue Ocean (ERRC).
+- **Захистити цінність:** надійність, приватність і етичний дизайн.
+
+**Допоміжні концепції:** Lean Analytics, AARRR, North Star, LIFT, Value Proposition Canvas, модель Кано, Hook model, мережеві ефекти, HEART, Cynefin, LTV/CAC, інкрементальність, ICE, «спостережено / гіпотеза», opportunity solution tree, типи ризику експерименту, поріг успіху, pre-mortem, прогалини вимірювання, service blueprint.
 
 Встановлення в Claude Code:
 

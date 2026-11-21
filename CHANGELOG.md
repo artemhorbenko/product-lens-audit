@@ -2,6 +2,8 @@
 
 ## 1.2.0 - 2026-11-21
 
+- English demo: `assets/example-audit.en.json`; README lists every lens and supporting concept, with links to both demos.
+
 - The report template renders everything from one `<script type="application/json" id="audit">` block. Claude writes only data, so a report takes far fewer tokens and the layout cannot drift.
 - `references/audit.schema.json` and `assets/example-audit.json`.
 - `scripts/validate_audit.py`: evidence for every opportunity, ICE in 1-10, sources for KPI numbers, alternatives and pre-mortem for the top 3.
