@@ -42,6 +42,7 @@ PROBE = """() => {
     badCells: cells.filter(td => !(td.children.length === 1 && td.firstElementChild.classList.contains('cv'))).length,
     tableTerms: document.querySelectorAll('#tbody .t').length,
     terms: document.querySelectorAll('.t').length,
+    overflows: [...document.querySelectorAll('.step .lab, .step .lab small, .kpi small, .kpi .num, .stop p, .stop h3, .card h3')].filter(e => e.offsetParent && e.scrollWidth > e.clientWidth + 2).length,
     overlaps: [...document.querySelectorAll('#funnel .track, .kpi, .stop')].reduce((n, box) => {
       const kids = [...box.querySelectorAll('span, small, b, .note, .ndl')].filter(e => e.offsetParent && e.textContent.trim());
       for (let i = 0; i < kids.length; i++) for (let j = i + 1; j < kids.length; j++) {
@@ -93,6 +94,8 @@ async def check_view(browser, url, name, ctx_args, out):
         fails.append("opportunities table is empty")
     if p["badCells"]:
         fails.append(f"{p['badCells']} table cells are not wrapped in one .cv (breaks the phone layout)")
+    if p["overflows"]:
+        fails.append(f"{p['overflows']} labels overflow their box (text runs into the next column)")
     if p["overlaps"]:
         fails.append(f"{p['overlaps']} overlapping text labels in the funnel, KPIs or journey")
     if not p["terms"]:

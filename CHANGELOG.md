@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1 - 2026-11-21
+
+- Rates under 0.1% show with one significant digit (0.006%) instead of "0%".
+- Long funnel labels wrap instead of running into the bar; the journey stacks vertically below 1000px.
+- `check_report.py` fails on labels that overflow their box.
+
 ## 1.2.0 - 2026-11-21
 
 - English demo: `assets/example-audit.en.json`; README lists every lens and supporting concept, with links to both demos.

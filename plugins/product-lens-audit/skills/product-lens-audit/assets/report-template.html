@@ -39,7 +39,7 @@ p{margin:0 0 12px;max-width:68ch}
 .funnel{margin-top:26px}
 .step{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr) 5.5em;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
 .step .lab{font-size:15px}
-.step .lab small{display:block;color:var(--mute);font-size:13px;white-space:nowrap}
+.step .lab small{display:block;color:var(--mute);font-size:13px;overflow-wrap:anywhere}
 .track{height:30px;background:var(--soft);border-radius:3px;position:relative}
 .bar{height:100%;background:var(--ink);border-radius:3px;transform-origin:left;animation:grow .9s ease-out both}
 .step.hot .bar{background:var(--red)}
@@ -105,7 +105,8 @@ details{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
 summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
 footer{font-size:13px;color:var(--mute)}
 @media(max-width:900px){.two{grid-template-columns:minmax(0,1fr)}.cards{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:760px){.route{grid-template-columns:minmax(0,1fr)}.route::before{left:21px;right:auto;top:8px;bottom:8px;width:4px;height:auto}.stop{display:grid;grid-template-columns:46px minmax(0,1fr);gap:14px;text-align:left;padding:0 0 14px}.dot{margin:0}}
+@media(max-width:1000px){.route{grid-template-columns:minmax(0,1fr)}.route::before{left:21px;right:auto;top:8px;bottom:8px;width:4px;height:auto}.stop{display:grid;grid-template-columns:46px minmax(0,1fr);gap:14px;text-align:left;padding:0 0 14px}.dot{margin:0}}
+.stop h3,.stop p{overflow-wrap:break-word}
 @media(max-width:600px){.step{grid-template-columns:minmax(0,1fr) 4.5em}.step .track{grid-column:1/-1;grid-row:2}.note{display:none}table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0}.stack td::before{content:attr(data-l);color:var(--mute);font-size:13px}.ice{width:9em}}
 .seg{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:4px;margin-top:26px}
 .seg i{height:56px;border-radius:3px;background:var(--ink)}
@@ -1007,7 +1008,7 @@ document.querySelectorAll("[data-t]").forEach(e=>{const v=T[e.dataset.t];if(v==n
 document.getElementById("kpis").innerHTML=(D.kpis||[]).map(k=>`<div class="kpi"><div class="num${k.hot?" red":""}">${tok(k.v)}</div><small>${tok(k.l)}</small></div>`).join("");
 const pc=x=>(Math.round(x*10)/10).toString().replace(".",",")+"%";
 const fb=document.getElementById("funnel");
-if(leaks)fb.innerHTML=leaks.map(f=>{const nd=f.v==null||!f.b,r=nd?0:f.v/f.b*100,bw=nd?0:Math.min(r/f.t,1)*100;return `<div class="step hot${nd?" nd":""}"><div class="lab">${f.l}<small>${nd?L.noData:f.sub||""}</small></div><div class="track" style="--w:${Math.max(bw,1)}%">${nd?`<span class="ndl">${L.noData}</span>`:`<div class="bar" style="width:${bw}%"></div>`}<span class="note">${L.target} ${f.t}%</span></div><div class="pct red">${nd?"—":(Math.round(r*10)/10).toLocaleString(L.locale)+"%"}</div></div>`}).join("");
+if(leaks)fb.innerHTML=leaks.map(f=>{const nd=f.v==null||!f.b,r=nd?0:f.v/f.b*100,bw=nd?0:Math.min(r/f.t,1)*100;return `<div class="step hot${nd?" nd":""}"><div class="lab">${f.l}<small>${nd?L.noData:f.sub||""}</small></div><div class="track" style="--w:${Math.max(bw,1)}%">${nd?`<span class="ndl">${L.noData}</span>`:`<div class="bar" style="width:${bw}%"></div>`}<span class="note">${L.target} ${f.t}%</span></div><div class="pct red">${nd?"—":(r>0&&r<0.1?r.toLocaleString(L.locale,{maximumSignificantDigits:1}):(Math.round(r*10)/10).toLocaleString(L.locale))+"%"}</div></div>`}).join("");
 else if(funnel)fb.innerHTML=funnel.slice(1).map((f,i)=>{const prev=funnel[i].n,nd=f.n==null||prev==null,r=nd?0:f.n/prev*100,shown=nd?"—":r>100?(f.n/prev).toLocaleString(L.locale,{maximumFractionDigits:1,minimumFractionDigits:1})+"×":Math.round(r)+"%",bw=Math.min(r,100);return `<div class="step${f.hot?" hot":""}${nd?" nd":""}"><div class="lab">${f.l}<small>${f.n==null?L.noData:fmt(f.n)}${f.sub?" · "+f.sub:""}</small></div><div class="track" style="--w:${nd?0:bw}%">${nd?`<span class="ndl">${L.noData}</span>`:`<div class="bar" style="width:${bw}%"></div>`}${f.note?`<span class="note">← ${f.note}</span>`:""}</div><div class="pct${f.hot?" red":""}">${shown}</div></div>`}).join("");
 else fb.remove();
 if(!stage)document.getElementById("stage").remove();else document.getElementById("stage").innerHTML=`<div class="st-row">${L.stages.map((s,i)=>`<span class="st${i<stage.cur?" past":""}${i==stage.cur?" cur":""}">${s}</span>`).join("")}</div><p><b>${L.stageLbl}: ${L.stages[stage.cur]}.</b> ${stage.note}</p>`;
