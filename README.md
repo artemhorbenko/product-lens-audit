@@ -52,7 +52,7 @@ Then ask, for example: *"Run a lens audit of example.com, the goal is more trial
 
 ### Claude app (claude.ai, desktop, mobile)
 
-1. Download `product-lens-audit-skill.zip` from the this repository ([direct download](https://github.com/artemhorbenko/product-lens-audit/raw/main/product-lens-audit-skill.zip)).
+1. Download `product-lens-audit-skill.zip` from this repository ([direct download](https://github.com/artemhorbenko/product-lens-audit/raw/main/product-lens-audit-skill.zip)).
 2. Make sure code execution is on (Free, Pro, Max: Settings → Capabilities).
 3. Go to **Customize → Skills**, click **+**, then **Create skill → Upload a skill**, and choose the ZIP.
 
