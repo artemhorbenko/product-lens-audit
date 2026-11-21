@@ -10,3 +10,4 @@ First public release.
 - Visual HTML report template: constraint headline, funnel, product stage, lens radar, service-blueprint journey, impact-effort matrix, ranked table, full plan, data and confidence.
 - Tooltips for every term: hover on desktop, tap on phone and tablet.
 - `scripts/check_report.py`: headless render check on desktop, tablet and phone.
+- `product-lens-audit-skill.zip` in the repo root for uploading to the Claude app (rebuild it whenever the skill folder changes).
