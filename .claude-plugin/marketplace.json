@@ -1,0 +1,16 @@
+{
+  "name": "product-lens-audit",
+  "description": "Product Lens Audit: audit a digital product through 13 strategy lenses and get a visual, evidence-based improvement report.",
+  "owner": {
+    "name": "Artem Horbenko",
+    "url": "https://github.com/artemhorbenko"
+  },
+  "plugins": [
+    {
+      "name": "product-lens-audit",
+      "source": "./plugins/product-lens-audit",
+      "description": "Audit a website, app or SaaS flow through CRO, Theory of Constraints, JTBD, growth loops, PLG, Blue Ocean and 7 more lenses; get a prioritized, render-checked HTML report.",
+      "version": "1.0.0"
+    }
+  ]
+}

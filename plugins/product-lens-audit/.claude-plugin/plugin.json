@@ -1,0 +1,13 @@
+{
+  "name": "product-lens-audit",
+  "version": "1.0.0",
+  "description": "Audit a digital product through 13 strategy lenses (CRO, TOC, Kaizen, JTBD, discovery, service design, growth loops, PLG, platform, business model, Blue Ocean, reliability, privacy) and deliver a visual report with prioritized, evidence-based improvements.",
+  "author": {
+    "name": "Artem Horbenko",
+    "url": "https://github.com/artemhorbenko"
+  },
+  "homepage": "https://github.com/artemhorbenko/product-lens-audit",
+  "repository": "https://github.com/artemhorbenko/product-lens-audit",
+  "license": "MIT",
+  "keywords": ["product", "audit", "cro", "growth", "jtbd", "theory-of-constraints", "plg", "report"]
+}

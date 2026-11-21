@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lens-аудит: демо звіту</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@600;800&family=Sofia+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: an audit report read by a product team, dense and calm
+   IDEA an annual-report spread: finding as headline, one solid vermilion mass marks the constraint
+   PICTURE the journey funnel with step conversion, the constraint bar in vermilion; then lens radar, journey route, impact/effort matrix
+   COLOUR white / black ink, vermilion #ff4a1c for the constraint and top bets, amber for warnings; night on #120d0b
+   TYPE Sofia Sans Condensed 800 for titles and figures + Sofia Sans for text (both Cyrillic)
+   LAYOUT laptop: title + 4 figures across, funnel full width; then two-column bands. phone: everything stacks, tables become cards */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#120d0b);--ink:light-dark(#111111,#f4efe9);--mute:light-dark(#5d5a57,#b3aca5);--line:light-dark(#e6e2de,#2e2622);--soft:light-dark(#f6f3f0,#1c1512);--red:light-dark(#ff4a1c,#ff6a43);--amber:light-dark(#d98a00,#f2b23a);--ok:light-dark(#111111,#f4efe9)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Sofia Sans",system-ui,sans-serif;overflow-x:clip}
+.band{padding-block:clamp(28px,4vw,56px);padding-left:max(5vw,16px);padding-right:max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,.num{font-family:"Sofia Sans Condensed","Arial Narrow",sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+h1{font-size:clamp(32px,5vw,52px);text-wrap:balance;max-width:20ch}
+h2{font-size:clamp(26px,3vw,34px);text-wrap:balance;margin-bottom:8px}
+h3{font-size:17px;margin:0 0 4px}
+p{margin:0 0 12px;max-width:68ch}
+.lead{font-size:17px;color:var(--mute);margin-top:14px}
+.demo{display:inline-block;font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:2px 10px;margin-bottom:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:0;margin-top:28px;border-top:2px solid var(--ink)}
+.kpi{padding:14px 16px 6px 0}
+.kpi .num{font-size:clamp(34px,4.5vw,48px)}
+.kpi small{display:block;font-size:13px;color:var(--mute)}
+.red{color:var(--red)}
+.nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:6px max(5vw,16px)}
+.nav a{flex:none;color:var(--ink);text-decoration:none;font-size:14px;padding:10px 12px;border-radius:8px}
+.nav a:hover,.nav a:focus-visible{background:var(--soft);outline:none}
+.funnel{margin-top:26px}
+.step{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr) 5.5em;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.step .lab{font-size:15px}
+.step .lab small{display:block;color:var(--mute);font-size:13px;white-space:nowrap}
+.track{height:30px;background:var(--soft);border-radius:3px;position:relative}
+.bar{height:100%;background:var(--ink);border-radius:3px;transform-origin:left;animation:grow .9s ease-out both}
+.step.hot .bar{background:var(--red)}
+.step.hot .lab{font-weight:700}
+.pct{font-family:"Sofia Sans Condensed",sans-serif;font-weight:800;font-size:24px;text-align:right;white-space:nowrap}
+.note{position:absolute;left:calc(var(--w) + 10px);top:50%;transform:translateY(-50%);font-size:13px;color:var(--red);font-weight:700;white-space:nowrap}
+@keyframes grow{from{transform:scaleX(0)}}
+@media(prefers-reduced-motion:reduce){.bar{animation:none}}
+.alt{background:var(--soft)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start;margin-top:18px}
+.fig{position:relative;min-height:380px}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+svg text{paint-order:stroke;stroke:var(--bg);stroke-width:4px;font-family:"Sofia Sans",sans-serif;font-size:13px}
+.alt svg text{stroke:var(--soft)}
+.ico{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.group{margin-bottom:16px}
+.group h3{font-size:14px;color:var(--mute);font-weight:600;border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:6px}
+.lens{display:grid;grid-template-columns:22px minmax(0,9em) minmax(0,1fr) 2.4em;gap:10px;align-items:center;padding:5px 0;font-size:15px}
+.meter{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px;background:var(--ink)}
+.meter i.low{background:var(--red)}.meter i.mid{background:var(--amber)}
+.lens b{font-family:"Sofia Sans Condensed",sans-serif;font-size:18px;text-align:right}
+.route{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));margin-top:26px;position:relative}
+.route::before{content:"";position:absolute;left:6%;right:6%;top:21px;height:4px;background:var(--line)}
+.stop{position:relative;text-align:center;padding:0 6px}
+.dot{width:46px;height:46px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;border:4px solid var(--bg);background:var(--ink);color:var(--bg);font-weight:800;position:relative}
+.alt .dot{border-color:var(--soft)}
+.stop.warn .dot{background:var(--amber);color:#111}
+.stop.bad .dot{background:var(--red);color:#fff}
+.stop h3{font-size:15px}
+.stop p{font-size:13px;color:var(--mute);margin:0}
+.who{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:var(--mute);margin-top:18px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{font:inherit;font-size:14px;min-height:44px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{text-align:left;font-size:13px;color:var(--mute);font-weight:600;border-bottom:2px solid var(--ink);padding:8px 8px 6px}
+td{border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:top}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+.type{font-size:13px;padding:2px 8px;border-radius:4px;white-space:nowrap;border:1px solid var(--ink)}
+.type.ex{border-color:var(--red);color:var(--red)}
+.ice{display:grid;grid-template-columns:3em minmax(60px,1fr);gap:8px;align-items:center}
+.ice .meter i{background:var(--ink)}
+tr.top .ice .meter i{background:var(--red)}
+tr.top td:first-child{color:var(--red);font-weight:800}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+.card{border-top:4px solid var(--red);background:var(--bg);padding:18px 18px 8px}
+.card .num{font-size:40px;color:var(--red)}
+.card dl{margin:10px 0 0;font-size:15px}
+.card dt{font-size:13px;color:var(--mute)}
+.card dd{margin:0 0 10px}
+.src{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;font-size:15px;margin-top:12px}
+.src span:nth-child(even){white-space:nowrap;font-size:13px;font-weight:700}
+.st-ok{color:var(--ink)}.st-demo{color:var(--amber)}.st-no{color:var(--red)}
+.conf{margin-top:18px}
+.conf .meter{height:12px}
+details{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+footer{font-size:13px;color:var(--mute)}
+@media(max-width:900px){.two{grid-template-columns:minmax(0,1fr)}.cards{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){.route{grid-template-columns:minmax(0,1fr)}.route::before{left:21px;right:auto;top:8px;bottom:8px;width:4px;height:auto}.stop{display:grid;grid-template-columns:46px minmax(0,1fr);gap:14px;text-align:left;padding:0 0 14px}.dot{margin:0}}
+@media(max-width:600px){.step{grid-template-columns:minmax(0,1fr) 4.5em}.step .track{grid-column:1/-1;grid-row:2}.note{display:none}table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0}.stack td::before{content:attr(data-l);color:var(--mute);font-size:13px}.ice{width:9em}}
+.seg{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:4px;margin-top:26px}
+.seg i{height:56px;border-radius:3px;background:var(--ink)}
+.seg i.p{background:var(--amber)}
+.seg i.n{background:transparent;border:2px solid var(--red)}
+.checks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 40px;margin-top:18px}
+.chk{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px}
+.chk small{display:block;color:var(--mute);font-size:13px}
+.mk{width:20px;height:20px;border-radius:50%;margin-top:2px;background:var(--ink)}
+.mk.p{background:var(--amber)}.mk.n{background:transparent;border:2px solid var(--red)}
+.st-pend{color:var(--amber)}
+@media(max-width:700px){.checks{grid-template-columns:minmax(0,1fr)}.seg i{height:40px}}
+.plan{margin-top:20px;border-top:2px solid var(--ink)}
+.plan details{margin:0;border-top:0;border-bottom:1px solid var(--line);padding:0}
+.plan summary{display:grid;grid-template-columns:2.4em minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;list-style:none}
+.plan summary::-webkit-details-marker{display:none}
+.plan summary .num{font-size:26px}
+.plan summary .ttl{font-weight:700}
+.plan summary .ttl small{display:flex;flex-wrap:wrap;gap:6px 12px;font-weight:400;color:var(--mute);font-size:13px;margin-top:2px}
+.plan summary .arr{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:transform .2s}
+.plan details[open] .arr{transform:rotate(180deg)}
+.plan .top .num{color:var(--red)}
+.pbody{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:8px 36px;padding:0 0 18px 3.4em}
+.pbody h4{font-size:13px;color:var(--mute);font-weight:600;margin:10px 0 4px}
+.pbody p,.pbody li{font-size:15px}
+.pbody ol{margin:0;padding-left:1.2em}
+.pbody li{margin-bottom:4px}
+.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:15px;margin-top:10px}
+.facts dt{color:var(--mute);font-size:13px;padding-top:2px}
+.facts dd{margin:0}
+.tools{display:flex;justify-content:flex-end;margin-top:-6px}
+@media(prefers-reduced-motion:reduce){.plan summary .arr{transition:none}}
+@media(max-width:700px){.pbody{grid-template-columns:minmax(0,1fr);padding-left:0}}
+.t{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--ink) 55%,transparent);text-underline-offset:3px}
+.t:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
+#tip{position:fixed;z-index:20;max-width:min(320px,calc(100vw - 32px));background:var(--ink);color:var(--bg);font-size:14px;line-height:1.45;padding:10px 12px;border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.18);display:none}
+#tip b{display:block;margin-bottom:2px}
+.gloss{display:grid;grid-template-columns:minmax(0,12em) minmax(0,1fr);gap:6px 20px;font-size:15px;margin-top:12px}
+.gloss dt{font-weight:700}
+.gloss dd{margin:0;color:var(--mute)}
+@media(max-width:600px){.gloss{grid-template-columns:minmax(0,1fr)}.gloss dd{margin-bottom:8px}}
+.stage{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}
+.st-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin-bottom:10px}
+.st{font-size:14px;text-align:center;padding:8px 4px;border-radius:3px;background:var(--soft);color:var(--mute)}
+.st.past{background:color-mix(in srgb,var(--ink) 14%,var(--bg));color:var(--ink)}
+.st.cur{background:var(--ink);color:var(--bg);font-weight:700}
+.stage p{font-size:15px;margin:0}
+.ev{display:inline-block;font-size:12px;line-height:1.3;padding:1px 7px;border-radius:99px;border:1px solid var(--line);color:var(--mute);white-space:nowrap;vertical-align:1px}
+.ev.hyp{border-style:dashed}
+.answers{display:grid;grid-template-columns:minmax(0,10em) minmax(0,1fr);gap:4px 16px;font-size:15px;margin:6px 0 0}
+.answers dt{color:var(--mute);font-size:14px}
+.answers dd{margin:0}
+.answers dd.skip{color:var(--amber)}
+.pbody ul{margin:0;padding-left:1.2em}
+@media(max-width:600px){.st{font-size:13px;padding:6px 2px}.answers{grid-template-columns:minmax(0,1fr)}.answers dd{margin-bottom:6px}}
+.cv{display:block;min-width:0}
+@media(max-width:600px){.stack td{align-items:flex-start}.stack td .cv{text-align:right}.stack td:nth-child(2) .cv{text-align:left;flex:1}.stack td::before{flex:none}.ev{margin-top:4px}}
+.icef{display:none;font-weight:400;color:var(--mute);font-size:13px}
+@media(max-width:600px){.stack td:nth-child(5),.stack td:nth-child(6),.stack td:nth-child(7){display:none}.icef{display:inline}.ice{width:auto;grid-template-columns:auto minmax(70px,8em)}.ice b{white-space:nowrap}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-cro" viewBox="0 0 24 24"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></symbol>
+<symbol id="i-toc" viewBox="0 0 24 24"><path d="M6 4h12M6 20h12M7 4l5 7 5-7M7 20l5-7 5 7"/></symbol>
+<symbol id="i-kaizen" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4h-4"/></symbol>
+<symbol id="i-jtbd" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></symbol>
+<symbol id="i-disc" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></symbol>
+<symbol id="i-serv" viewBox="0 0 24 24"><circle cx="5" cy="17" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="19" cy="17" r="2"/><path d="M6 15.3l5-6.6M13 8.7l5 6.6"/></symbol>
+<symbol id="i-loop" viewBox="0 0 24 24"><path d="M7 9a3 3 0 1 0 0 6c3 0 7-6 10-6a3 3 0 1 1 0 6c-3 0-7-6-10-6"/></symbol>
+<symbol id="i-plg" viewBox="0 0 24 24"><path d="M5 8l7-4 7 4v8l-7 4-7-4zM5 8l7 4 7-4M12 12v8"/></symbol>
+<symbol id="i-plat" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></symbol>
+<symbol id="i-model" viewBox="0 0 24 24"><path d="M12 3l2 7 7 2-7 2-2 7-2-7-7-2 7-2z"/></symbol>
+<symbol id="i-ocean" viewBox="0 0 24 24"><path d="M3 9c3-3 6 3 9 0s6 3 9 0M3 15c3-3 6 3 9 0s6 3 9 0"/></symbol>
+<symbol id="i-rel" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+<symbol id="i-priv" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+</svg>
+
+<header class="band"><div class="wrap">
+<span class="demo">Демо-звіт: вигадана реферальна платформа «Loopwell», усі дані умовні</span>
+<h1>Вузьке місце — запрошення бачать лише <span class="red">9%</span> покупців</h1>
+<p class="lead">Поки запрошення ніхто не бачить, полірування share-сторінки майже нічого не дасть. Спершу варто виправити видимість, далі — швидкість петлі. Паралельно потрібен швидший запуск нових клієнтів: без нього продукт не перейде з етапу «Дохід» до масштабу.</p>
+<div class="kpis" id="kpis"></div>
+<div class="funnel" id="funnel" aria-label="Воронка реферального шляху"></div>
+<p class="lead" style="font-size:14px">Конверсія кожного кроку відносно попереднього, за 30 днів, усі клієнти разом. Червоним виділено обмеження (TOC).</p>
+<div class="stage" id="stage" aria-label="Етап продукту"></div>
+</div></header>
+
+<nav class="nav" aria-label="Розділи">
+<a href="#lenses">Лінзи</a><a href="#journey">Шлях</a><a href="#matrix">Матриця</a><a href="#ops">Можливості</a><a href="#next">Наступні кроки</a><a href="#plan">Повний план</a><a href="#data">Дані</a>
+</nav>
+<div id="tip" role="tooltip"></div>
+
+<section class="band alt" id="lenses"><div class="wrap">
+<h2>Найслабші лінзи — PLG, бізнес-модель і саме обмеження</h2>
+<p>Оцінка 0–100 показує, наскільки продукт уже використовує можливості кожної лінзи. Низька оцінка означає невикористаний потенціал, а не провал.</p>
+<div class="two">
+<div class="fig" id="radar" role="img" aria-label="Радар оцінок за лінзами"></div>
+<div id="lensList"></div>
+</div>
+</div></section>
+
+<section class="band" id="journey"><div class="wrap">
+<h2>Шлях ламається на стику команд, а не в інтерфейсі</h2>
+<p>Спрощений service blueprint від продажу до повторного запрошення. Найбільше болю — на запуску і там, де покупець мав би побачити запрошення.</p>
+<div class="route" id="route"></div>
+<div class="legend"><span style="--c:var(--ink)">Працює</span><span style="--c:var(--amber)">Є тертя</span><span style="--c:var(--red)">Блокує ріст</span></div>
+</div></section>
+
+<section class="band alt" id="matrix"><div class="wrap">
+<h2><span id="qwCount"></span> швидких перемог із високим впливом і малими зусиллями</h2>
+<p>Кожна точка — можливість із таблиці нижче. Чорні — оптимізація того, що є; червоні з обводкою — дослідницькі ставки.</p>
+<div class="fig" id="mx" style="min-height:420px" role="img" aria-label="Матриця вплив–зусилля"></div>
+</div></section>
+
+<section class="band" id="ops"><div class="wrap">
+<h2>12 можливостей, відсортованих за ICE</h2>
+<p>ICE = вплив × впевненість × легкість (кожне 1–10). Перші три виділено. Позначка «спостережено» означає, що знахідку видно в даних чи в продукті; «гіпотеза» — що її ще треба перевірити.</p>
+<div class="chips" role="group" aria-label="Фільтр">
+<button class="chip" id="f-all" data-f="all" aria-pressed="true">Усі</button>
+<button class="chip" id="f-opt" data-f="opt" aria-pressed="false">Оптимізація</button>
+<button class="chip" id="f-ex" data-f="ex" aria-pressed="false">Дослідження</button>
+</div>
+<div class="scroll"><table class="stack"><thead><tr><th>#</th><th>Можливість</th><th>Лінза</th><th>Тип</th><th>I</th><th>C</th><th>E</th><th>ICE</th></tr></thead><tbody id="tbody"></tbody></table></div>
+</div></section>
+
+<section class="band alt" id="next"><div class="wrap">
+<h2>Три кроки на найближчі 30 днів</h2>
+<p>У кожного кроку є гіпотеза, метрика успіху та найдешевший спосіб перевірки.</p>
+<div class="cards" id="cards"></div>
+</div></section>
+
+<section class="band" id="plan"><div class="wrap">
+<h2>Повний план: усі 12 кроків, від найвигіднішого</h2>
+<p>Для кожного кроку: чому він тут, що зробити, метрика, зусилля й ризик. Для перших трьох ще й розглянуті альтернативи, експеримент із порогом успіху та pre-mortem. Перші три розгорнуто.</p>
+<div class="chips tools"><button class="chip" id="toggleAll" aria-pressed="false">Розгорнути всі</button></div>
+<div class="plan" id="planList"></div>
+</div></section>
+
+<section class="band alt" id="data"><div class="wrap">
+<div class="two" style="margin-top:0">
+<div>
+<h2>Впевненість середня: двох ключових джерел бракує</h2>
+<p>Звіт спирається на прохід продукту, аналітику воронки та тікети. Трафік і пошуковий попит конкурентів не перевірено, тому оцінки Blue Ocean і PLG найменш надійні.</p>
+<div class="conf"><div class="lens" style="grid-template-columns:minmax(0,9em) minmax(0,1fr) 3em"><span>Впевненість звіту</span><div class="meter"><i class="mid" id="confBar"></i></div><b id="confNum"></b></div></div>
+<h3 style="margin-top:22px">Відповіді на старті</h3>
+<dl class="answers" id="answers"></dl>
+</div>
+<div class="src" id="src"></div>
+</div>
+<details><summary>Словник термінів</summary><p>Наведіть курсор на підкреслений термін (на телефоні чи планшеті — торкніться його), щоб побачити пояснення.</p><dl class="gloss" id="gloss"></dl></details>
+<details><summary>Як зроблено цей звіт</summary>
+<p>1. Перевірено підключені джерела й поставлено 4 питання, кожне з яких можна було пропустити (одне пропущено — див. відповіді).</p>
+<p>2. Визначено етап продукту за Lean Analytics і зважено лінзи: для етапу «Дохід» найважливіші утримання клієнтів і швидкість запуску.</p>
+<p>3. Кожну з 13 лінз застосовано до кроків шляху. Кожна знахідка позначена як «спостережено» або «гіпотеза».</p>
+<p>4. Знахідки оцінено за ICE, обмеження системи (TOC) отримало пріоритет. Для топ-3 розглянуто альтернативи, описано експеримент і зроблено pre-mortem.</p>
+</details>
+</div></section>
+
+<footer class="band" style="padding-block:20px"><div class="wrap">Згенеровано скілом product-lens-audit · демонстраційні дані</div></footer>
+
+<script>
+{
+const funnel=[
+ {l:"Покупки",n:120000},
+ {l:"Побачили запрошення",n:10800,hot:1,note:"обмеження: ціль 30%"},
+ {l:"Відкрили share-екран",n:3900},
+ {l:"Поділились",n:1560},
+ {l:"Друзі перейшли",n:4680,sub:"≈3 переходи на шер"},
+ {l:"Друзі купили",n:610},
+ {l:"Стали новими адвокатами",n:85}
+];
+const stage={list:["Емпатія","Утримання","Вірусність","Дохід","Масштаб"],cur:3,note:"Платні клієнти є, тож продукт на етапі «Дохід». Перехід до масштабу блокує ручний запуск: 31 день і 3 передачі між командами на кожного нового клієнта."};
+const G={opt:"Покращити систему",disc:"Правильна проблема",grow:"Рости інакше",game:"Змінити гру",prot:"Захист цінності"};
+const lenses=[
+ {k:"CRO",i:"cro",g:"opt",s:62},{k:"TOC",n:"Обмеження (TOC)",i:"toc",g:"opt",s:35},{k:"Kaizen",i:"kaizen",g:"opt",s:48},
+ {k:"JTBD",i:"jtbd",g:"disc",s:55},{k:"Discovery",i:"disc",g:"disc",s:40},{k:"Service",n:"Service design",i:"serv",g:"disc",s:45},
+ {k:"Loops",n:"Growth loops",i:"loop",g:"grow",s:38},{k:"PLG",i:"plg",g:"grow",s:22},{k:"Platform",n:"Платформа",i:"plat",g:"grow",s:50},
+ {k:"Модель",n:"Бізнес-модель",i:"model",g:"game",s:30},{k:"Blue Ocean",i:"ocean",g:"game",s:42},
+ {k:"Reliability",n:"Надійність",i:"rel",g:"prot",s:71},{k:"Privacy",n:"Приватність",i:"priv",g:"prot",s:78}
+];
+const route=[
+ {t:"Продаж",w:"Sales",st:"ok",p:"Обіцяють запуск за 2 тижні"},
+ {t:"Інтеграція",w:"Клієнт + інженери",st:"warn",p:"Чекання на розробників бренду"},
+ {t:"Запуск",w:"CSM",st:"bad",p:"В середньому 31 день, 3 передачі"},
+ {t:"Покупець бачить",w:"Віджет",st:"bad",p:"Лише 9% бачать запрошення"},
+ {t:"Шер",w:"Адвокат",st:"ok",p:"40% тих, хто відкрив, діляться"},
+ {t:"Друг купує",w:"Друг",st:"warn",p:"Умови нагороди неочевидні"},
+ {t:"Нагорода",w:"Система",st:"ok",p:"Видача за 5 хв, без збоїв"},
+ {t:"Новий адвокат",w:"Друг",st:"warn",p:"Запрошення не показують удруге"}
+];
+const ops=[
+ {t:"Показувати запрошення на thank-you сторінці та в листі-підтвердженні",l:"toc",ln:"TOC · CRO",x:"opt",ev:"obs",I:8,C:8,E:8},
+ {t:"Лист з особистим посиланням через 7 днів після доставки",l:"loop",ln:"Growth loops",x:"opt",ev:"hyp",I:7,C:7,E:8},
+ {t:"Шаблон кампанії «запуск за 1 день»",l:"kaizen",ln:"Kaizen",x:"opt",ev:"obs",I:6,C:7,E:6},
+ {t:"Подія «запрошення показано» на всіх інтеграціях + автоперевірка трекінгу після деплою клієнта",l:"rel",ln:"Надійність",x:"opt",ev:"obs",I:7,C:8,E:5},
+ {t:"Звіт LTV/CAC реферальних клієнтів для CFO бренду",l:"jtbd",ln:"JTBD",x:"opt",ev:"hyp",I:8,C:6,E:6},
+ {t:"Sandbox з демо-даними для проспектів",l:"plg",ln:"PLG",x:"ex",ev:"hyp",I:7,C:5,E:4},
+ {t:"Керована програма: бренд задає ціль, ми оптимізуємо",l:"model",ln:"Бізнес-модель",x:"ex",ev:"hyp",I:9,C:4,E:2},
+ {t:"Щотижня 2 інтерв'ю з утраченими угодами",l:"disc",ln:"Discovery",x:"opt",ev:"obs",I:6,C:7,E:9},
+ {t:"Прибрати фальшивий таймер «пропозиція згорає»",l:"priv",ln:"Приватність",x:"opt",ev:"obs",I:4,C:8,E:9},
+ {t:"Кабінет для агенцій з кількома брендами",l:"plat",ln:"Платформа",x:"ex",ev:"hyp",I:6,C:5,E:4},
+ {t:"Сегмент DTC-підписок: нагорода — місяць безкоштовно",l:"ocean",ln:"Blue Ocean",x:"ex",ev:"hyp",I:6,C:4,E:5},
+ {t:"Один власник усього шляху запуску",l:"serv",ln:"Service design",x:"opt",ev:"obs",I:6,C:6,E:7}
+].map((o,i)=>({...o,id:i+1,ice:o.I*o.C*o.E,eff:11-o.E}));
+const sorted=[...ops].sort((a,b)=>b.ice-a.ice);
+const top3=sorted.slice(0,3).map(o=>o.id);
+const plans={
+ 1:{h:"Якщо показати запрошення одразу після покупки, видимість зросте з 9% до 25% і більше, бо це момент найбільшого задоволення.",m:"Частка покупців, які побачили запрошення",t:"A/B на 50% трафіку двох клієнтів, 2 тижні"},
+ 2:{h:"Якщо нагадати про посилання після доставки, частка шерів зросте, бо покупець уже спробував товар.",m:"Шери на 1000 покупок за 30 днів",t:"Ручна розсилка одному клієнту з контрольною групою"},
+ 8:{h:"Якщо регулярно чути причини відмов, ми знайдемо 1–2 повторювані бар'єри до того, як щось будувати.",m:"Кількість інтерв'ю та знайдених патернів",t:"8 дзвінків за місяць, шаблон із 5 питань"}
+};
+const detail={
+ 1:{why:"Воронка: з 120 000 покупок запрошення побачили лише 10 800 (9%). Далі конверсія нормальна: 36% відкривають share-екран, 40% з них діляться. Отже, обмеження саме тут.",steps:["Додати блок запрошення на thank-you сторінку в усіх клієнтів, де дозволяє інтеграція.","Додати персональне посилання в лист-підтвердження замовлення.","Увімкнути A/B: половина покупців бачить нові точки показу, половина — як зараз.","Через 2 тижні порівняти частку тих, хто побачив, і шери на 1000 покупок."],metric:"Частка покупців, які побачили запрошення (зараз 9%)",effort:"2–3 дні",risk:"Нав'язливість: показувати один раз за покупку і не перекривати підтвердження замовлення.",alt:["Pop-up на сторінці товару — відкинуто: заважає покупці, ризик для CRO клієнта.","Банер в особистому кабінеті — залишено як наступний тест: туди заходить менше людей."],rtype:"Цінність",thr:"Видимість ≥ 20% і шери на 1000 покупок не нижчі за контроль",pm:"Не спрацювало, бо в половини клієнтів thank-you сторінка кастомна й блок не відобразився. Тому спершу перевірити сумісність інтеграцій (крок 4).",copy:["«Подаруйте другу −15% — і отримайте 15 $ після його покупки»: вигода для обох в одному рядку.","«Сподобалось? Поділіться з другом і заберіть бонус»: м'якше, спирається на щойно отримане задоволення."]},
+ 2:{why:"Нові адвокати з'являються рідко: 85 з 610 друзів, які купили (14%). Повторного запрошення після доставки немає, а момент задоволення настає саме тоді. Ефект ще не перевірено, тому це гіпотеза.",steps:["Вибрати одного клієнта з достатнім обсягом замовлень.","Налаштувати лист через 7 днів після доставки з персональним посиланням.","Розділити покупців на тестову й контрольну групи.","Порівняти шери на 1000 покупок за 30 днів."],metric:"Шери на 1000 покупок за 30 днів",effort:"≈1 день",risk:"Спам-скарги: один лист, легка відписка, без повторних нагадувань.",alt:["Push-сповіщення — відкинуто: мало клієнтів мають застосунок.","SMS — відкинуто: дорого і потребує окремої згоди."],rtype:"Цінність",thr:"+20% шерів на 1000 покупок проти контролю при скаргах < 0,1%",pm:"Не спрацювало, бо лист потрапив у «Промоакції». Перевірити тему й відправника на тестовій скриньці до запуску."},
+ 8:{why:"Причини програних угод зараз записують однією фразою в CRM. Без регулярних розмов неясно, що блокує продаж: ціна, інтеграція чи довіра.",steps:["Щотижня брати 2 програні або завислі угоди з CRM.","Дзвінок на 20 хвилин за шаблоном із 5 питань про минулі рішення, а не про гіпотетичні.","Записувати цитати й теги в одну таблицю.","Раз на місяць зводити патерни й переносити їх у беклог."],metric:"2 інтерв'ю на тиждень і щонайменше 1 новий патерн на місяць",effort:"≈2 години на тиждень",risk:"Питання-продажі замість питань-досліджень: ставити питання про минулі дії, нічого не пропонувати.",alt:["Анкета для програних угод — як доповнення: відповідей мало і вони поверхові.","Аналіз записів sales-дзвінків — залишено: дешево, але не замінює розмов."],rtype:"Цінність",thr:"Щонайменше 8 інтерв'ю за місяць і 1 рішення в беклозі на їхній основі",pm:"Не спрацювало, бо ніхто не відповів на запрошення. Пропонувати дзвінок від імені фаундера і давати подарунок за час."},
+ 4:{why:"Подію показу запрошення шлють лише частина інтеграцій, тож 9% можуть бути заниженою оцінкою. Це прогалина у вимірюванні: без неї не можна чесно оцінити крок 1.",steps:["Перелічити інтеграції, де подія не надходить.","Додати подію в SDK і документацію.","Після кожного деплою клієнта автоматично перевіряти, чи приходять події.","Сповіщати CSM, якщо подій немає довше за 24 години."],metric:"Частка інтеграцій з подією показу (ціль 100%)",effort:"3–4 дні",risk:"Помилкові тривоги: сповіщати лише після 24 годин тиші."},
+ 5:{why:"Бренд «наймає» реферальну програму заради прибуткових клієнтів без зайвої роботи (JTBD), а звіт показує лише шери й переходи. Що CFO потрібна саме ця цифра — поки гіпотеза.",steps:["Порівняти LTV і CAC реферальних та інших клієнтів на даних 2–3 брендів.","Зробити одну сторінку звіту для CFO.","Показати на 3 продовженнях договорів і зібрати реакцію."],metric:"Частка продовжень, де звіт використали в розмові",effort:"≈1 тиждень",risk:"Інкрементальність: частина друзів купила б і так, тому в звіті має бути чесна оцінка."},
+ 3:{why:"Запуск триває в середньому 31 день, хоча продаж обіцяє 2 тижні. Більшість кампаній збирають вручну з однакових блоків.",steps:["Взяти 3 найчастіші конфігурації кампаній.","Зробити з них шаблони з налаштуваннями за замовчуванням.","Вимірювати дні від підписання до запуску для кожного нового клієнта."],metric:"Дні від підписання до запуску (зараз 31)",effort:"≈1 тиждень",risk:"Шаблони, що не підходять: дозволити змінювати кожен блок."},
+ 9:{why:"У віджеті одного клієнта таймер «пропозиція згорає» скидається при кожному оновленні сторінки. Це штучна терміновість.",steps:["Прибрати таймер або прив'язати його до реальної дати завершення акції.","Додати в гайдлайни правило: лише справжні дедлайни."],metric:"Скарги та відписки; конверсія не нижча за контроль",effort:"≈1 година",risk:"Можливе невелике падіння конверсії, яке вартує збереженої довіри."},
+ 12:{why:"Між продажем, інтеграцією і запуском — 3 передачі, і жодна людина не відповідає за весь шлях. Звідси 31 день замість обіцяних 14.",steps:["Призначити власника запуску для кожного нового клієнта.","Зробити service blueprint поточного шляху та позначити місця очікування.","Щотижня переглядати клієнтів, що застрягли довше 7 днів."],metric:"Дні до запуску та кількість передач",effort:"≈2 дні на налаштування",risk:"Власник без повноважень: дати право прискорювати роботу інших команд."},
+ 6:{why:"Зараз бренд бачить цінність лише після продажу й запуску. Sandbox з демо-даними міг би скоротити цикл продажу, але попит на нього не перевірено.",steps:["Зробити fake door: кнопка «Спробувати sandbox» на сайті.","Порахувати кліки за 2 тижні.","Якщо кліків достатньо — збирати мінімальну версію на демо-даних."],metric:"Кліки по fake door і заявки з нього",effort:"1 день на тест, 3–4 тижні на версію",risk:"Fake door розчаровує: показувати чесне повідомлення і пропонувати демо з людиною."},
+ 10:{why:"Агенції ведуть кілька брендів, але кожен бренд налаштовують окремо. Скільки агенцій готові платити за спільний кабінет — невідомо.",steps:["Поговорити з 5 агенціями-партнерами.","Описати мінімальний кабінет: список брендів, спільні шаблони, звіти.","Вирішувати після інтерв'ю."],metric:"Кількість агенцій, готових до пілоту",effort:"2 тижні на дослідження",risk:"Розпорошення фокусу, поки не вирішено обмеження."},
+ 11:{why:"DTC-бренди з підпискою мало обслуговуються конкурентами, а нагорода «місяць безкоштовно» природна для підписки. Попит — гіпотеза.",steps:["Знайти 10 DTC-брендів із підпискою.","Запропонувати пілот з нагородою «місяць безкоштовно».","Порівняти вірусність із поточними клієнтами."],metric:"Пілоти й частка шерів у пілотних брендах",effort:"≈1 місяць",risk:"Бути іншим — ще не означає мати попит. Не будувати нічого до підтвердження."},
+ 7:{why:"Частина брендів хоче результат, а не інструмент. Керована програма з оплатою за результат змінює модель, але вимагає іншої економіки.",steps:["Запропонувати 2 клієнтам пілот: вони задають ціль і обмеження, ми налаштовуємо й оптимізуємо.","Вести облік годин команди на кожен пілот.","Через 3 місяці порівняти маржу з підпискою."],metric:"Маржа пілоту та результат клієнта",effort:"3 місяці пілоту",risk:"Ручна праця з'їдає маржу. Ставити ліміт годин."}
+};
+const answers=[["Хто головний клієнт?","Бренди-клієнти (B2B)"],["Ціль кварталу","Більше реферальних покупок у наявних клієнтів"],["Які дані є","Аналітика воронки, тікети підтримки, причини втрачених угод"],["Що вже пробували","Пропущено. Припущення: тестів видимості запрошення ще не було"]];
+const sources=[["Прохід продукту","готово","ok"],["Скріншоти флоу","готово","ok"],["Відповіді на старті (3 з 4)","готово","ok"],["Аналітика воронки","демо","demo"],["Тікети підтримки","демо","demo"],["Причини втрачених угод","демо","demo"],["Ahrefs: пошуковий попит","не підключено","no"],["Similarweb: трафік конкурентів","не підключено","no"]];
+const kp=()=>[[health+"/100","Індекс за 13 лінзами"],["9%","Бачать запрошення, ціль 30%"],["31 день","Від підписання до запуску"],[qw,"Швидких перемог"]];
+const GL={
+ "Lean Analytics":{g:"етапи продукту",d:"Підхід, за яким продукт проходить етапи: емпатія, утримання, вірусність, дохід, масштаб. На кожному етапі важливі свої метрики й лінзи."},
+ "Service design":{g:"дизайн усього шляху",d:"Чи працює весь досвід клієнта разом: від продажу до запуску, підтримки й оплати, а не лише інтерфейс."},
+ "service blueprint":{g:"карта сервісу",d:"Схема шляху клієнта: що робить клієнт, що робить команда видимо й невидимо, і які системи це підтримують."},
+ "Growth loops":{g:"петлі росту",d:"Механіка, у якій одна успішна дія запускає наступну: покупець ділиться, друг купує, друг сам стає адвокатом."},
+ "Blue Ocean":{g:"вільна ніша",d:"Стратегія блакитного океану: конкурувати іншим видом цінності там, де конкуренція ще слабка."},
+ "pre-mortem":{g:"аналіз провалу наперед",d:"Уявити, що через 3 місяці ідея не спрацювала, і пояснити чому. Причини стають ризиками, які можна закрити заздалегідь."},
+ "Discovery":{g:"постійне дослідження клієнтів",d:"Регулярні розмови з клієнтами й перевірка припущень до того, як щось будувати."},
+ "fake door":{g:"тест попиту без продукту",d:"Кнопка чи сторінка для функції, якої ще немає. Кліки показують попит; людям чесно пояснюють, що функція в розробці."},
+ "thank-you":{g:"сторінка після покупки",d:"Сторінка, яку покупець бачить одразу після оформлення замовлення. Момент найбільшої задоволеності."},
+ "Sandbox":{g:"пісочниця з демо-даними",d:"Безпечна копія продукту, де можна все спробувати без інтеграції та ризику."},
+ "Kaizen":{g:"постійні малі покращення",d:"Регулярно трохи покращувати процес: швидше, з меншою кількістю помилок і ручної роботи."},
+ "JTBD":{g:"робота, яку «наймає» клієнт",d:"Jobs to Be Done: продукт «наймають», щоб просунутися в задачі. Бренд хоче не платформу, а прибуткових клієнтів без зайвої роботи."},
+ "TOC":{g:"теорія обмежень",d:"Theory of Constraints: система працює зі швидкістю свого найвужчого місця. Тут це видимість запрошення — 9%."},
+ "CRO":{g:"оптимізація конверсії",d:"Conversion Rate Optimization: як зробити так, щоб більше людей дійшли до цінної дії."},
+ "PLG":{g:"ріст через сам продукт",d:"Product-led growth: продукт сам залучає клієнтів (пробний доступ, sandbox), а не лише продажі."},
+ "ICE":{g:"оцінка пріоритету",d:"Impact × Confidence × Ease: вплив, впевненість і легкість, кожне від 1 до 10. Що більший добуток, то раніше варто братися."},
+ "LTV":{g:"дохід з клієнта за весь час",d:"Lifetime value: скільки грошей клієнт приносить за весь час співпраці."},
+ "CAC":{g:"вартість залучення клієнта",d:"Customer acquisition cost: скільки коштує залучити одного нового клієнта."},
+ "CFO":{g:"фінансовий директор",d:"Chief Financial Officer — людина, яка вирішує, чи окупається програма."},
+ "CSM":{g:"менеджер клієнта",d:"Customer success manager: веде клієнта після продажу, від запуску до продовження договору."},
+ "DTC":{g:"прямі продажі брендів",d:"Direct-to-consumer: бренди, що продають напряму покупцям, без маркетплейсів і дистриб'юторів."},
+ "CRM":{g:"база клієнтів і угод",d:"Система, де sales веде угоди, контакти й причини виграшів та програшів."},
+ "SDK":{g:"бібліотека для інтеграції",d:"Набір коду, який клієнт встановлює на сайт, щоб віджет і події працювали."},
+ "A/B":{g:"порівняльний тест",d:"Половина людей бачить новий варіант, половина — старий; різниця показує ефект зміни."}
+};
+const fmt=n=>n.toLocaleString("uk-UA");
+const health=Math.round(lenses.reduce((a,b)=>a+b.s,0)/lenses.length);
+const qw=ops.filter(o=>o.I>=6&&o.eff<=5).length;
+document.getElementById("kpis").innerHTML=kp().map((k,i)=>`<div class="kpi"><div class="num${i==1?" red":""}">${k[0]}</div><small>${k[1]}</small></div>`).join("");
+document.getElementById("qwCount").textContent=qw;
+const pc=x=>(Math.round(x*10)/10).toString().replace(".",",")+"%";
+document.getElementById("funnel").innerHTML=funnel.slice(1).map((f,i)=>{const prev=funnel[i].n,r=f.n/prev*100,shown=r>100?(f.n/prev).toFixed(1).replace(".",",")+"×":Math.round(r)+"%",bw=Math.min(r,100);return `<div class="step${f.hot?" hot":""}"><div class="lab">${f.l}<small>${fmt(f.n)}${f.sub?" · "+f.sub:""}</small></div><div class="track" style="--w:${bw}%"><div class="bar" style="width:${bw}%"></div>${f.note?`<span class="note">← ${f.note}</span>`:""}</div><div class="pct${f.hot?" red":""}">${shown}</div></div>`}).join("");
+document.getElementById("stage").innerHTML=`<div class="st-row">${stage.list.map((s,i)=>`<span class="st${i<stage.cur?" past":""}${i==stage.cur?" cur":""}">${s}</span>`).join("")}</div><p><b>Етап продукту (Lean Analytics): ${stage.list[stage.cur]}.</b> ${stage.note}</p>`;
+document.getElementById("answers").innerHTML=answers.map(a=>`<dt>${a[0]}</dt><dd${a[1].startsWith("Пропущено")?' class="skip"':""}>${a[1]}</dd>`).join("");
+const ic=(id,c="")=>`<svg class="ico ${c}"><use href="#i-${id}"/></svg>`;
+const cls=s=>s<40?"low":s<60?"mid":"";
+document.getElementById("lensList").innerHTML=Object.keys(G).map(g=>`<div class="group"><h3>${G[g]}</h3>${lenses.filter(l=>l.g==g).map(l=>`<div class="lens">${ic(l.i)}<span>${l.n||l.k}</span><div class="meter"><i class="${cls(l.s)}" style="width:${l.s}%"></i></div><b>${l.s}</b></div>`).join("")}</div>`).join("");
+document.getElementById("route").innerHTML=route.map((r,i)=>`<div class="stop ${r.st}"><div class="dot">${i+1}</div><div><span class="who">${r.w}</span><h3>${r.t}</h3><p>${r.p}</p></div></div>`).join("");
+const tb=document.getElementById("tbody");
+const wrapCells=()=>tb.querySelectorAll("td").forEach(td=>{if(td.firstElementChild&&td.firstElementChild.classList.contains("cv")&&td.childNodes.length==1)return;const s=document.createElement("span");s.className="cv";while(td.firstChild)s.append(td.firstChild);td.append(s)});
+const renderTable=f=>{tb.innerHTML=sorted.filter(o=>f=="all"||o.x==f).map(o=>`<tr class="${top3.includes(o.id)?"top":""}"><td class="n">${o.id}</td><td>${o.t} <span class="ev ${o.ev}">${o.ev=="obs"?"спостережено":"гіпотеза"}</span></td><td><span class="tag">${ic(o.l)}${o.ln}</span></td><td><span class="type ${o.x}">${o.x=="ex"?"Дослідження":"Оптимізація"}</span></td><td class="n">${o.I}</td><td class="n">${o.C}</td><td class="n">${o.E}</td><td><div class="ice"><b class="n">${o.ice}<small class="icef"> = ${o.I}×${o.C}×${o.E}</small></b><div class="meter"><i style="width:${o.ice/sorted[0].ice*100}%"></i></div></div></td></tr>`).join("")};
+renderTable("all");
+document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));renderTable(b.dataset.f);wrapTerms(tb);wrapCells()}));
+document.getElementById("cards").innerHTML=top3.map(id=>{const o=ops.find(x=>x.id==id),p=plans[id];return `<article class="card"><div class="num">#${id}</div><h3>${o.t}</h3><span class="tag" style="color:var(--mute)">${ic(o.l)}${o.ln} · ICE ${o.ice}</span><dl><dt>Гіпотеза</dt><dd>${p.h}</dd><dt>Метрика успіху</dt><dd>${p.m}</dd><dt>Найдешевший тест</dt><dd>${p.t}</dd></dl></article>`}).join("");
+document.getElementById("planList").innerHTML=sorted.map(o=>{const d=detail[o.id],t=top3.includes(o.id);return `<details class="${t?"top":""}"${t?" open":""}><summary><span class="num">${o.id}</span><span class="ttl">${o.t}<small><span class="tag">${ic(o.l)}${o.ln}</span><span>ICE ${o.ice}</span><span>${o.x=="ex"?"Дослідження":"Оптимізація"}</span><span>${d.effort}</span><span class="ev ${o.ev}">${o.ev=="obs"?"спостережено":"гіпотеза"}</span></small></span><span class="arr" aria-hidden="true">▾</span></summary><div class="pbody"><div><h4>Чому це тут</h4><p>${d.why}</p><dl class="facts"><dt>Метрика</dt><dd>${d.metric}</dd><dt>Зусилля</dt><dd>${d.effort}</dd><dt>Ризик</dt><dd>${d.risk}</dd>${d.rtype?`<dt>Тип ризику</dt><dd>${d.rtype}</dd><dt>Поріг успіху</dt><dd>${d.thr}</dd>`:""}</dl>${d.pm?`<h4>Pre-mortem</h4><p>${d.pm}</p>`:""}</div><div><h4>Що зробити</h4><ol>${d.steps.map(s=>`<li>${s}</li>`).join("")}</ol>${d.alt?`<h4>Розглянуті альтернативи</h4><ul>${d.alt.map(s=>`<li>${s}</li>`).join("")}</ul>`:""}${d.copy?`<h4>Варіанти тексту</h4><ul>${d.copy.map(s=>`<li>${s}</li>`).join("")}</ul>`:""}</div></div></details>`}).join("");
+const tg=document.getElementById("toggleAll");
+tg.addEventListener("click",()=>{const open=tg.getAttribute("aria-pressed")!="true";document.querySelectorAll("#planList details").forEach(d=>d.open=open);tg.setAttribute("aria-pressed",open);tg.textContent=open?"Згорнути всі":"Розгорнути всі"});
+document.getElementById("src").innerHTML=sources.map(s=>`<span>${s[0]}</span><span class="st-${s[2]}">${s[1]}</span>`).join("");
+const conf=Math.round(sources.reduce((a,s)=>a+(s[2]=="ok"?1:s[2]=="demo"?.6:0),0)/sources.length*100);
+document.getElementById("confBar").style.width=conf+"%";
+document.getElementById("confNum").textContent=conf+"%";
+const keys=Object.keys(GL).sort((a,b)=>b.length-a.length);
+const rx=new RegExp("(?<![A-Za-zА-Яа-яІіЇїЄєҐґ0-9])("+keys.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![A-Za-zА-Яа-яІіЇїЄєҐґ0-9])","g");
+const wrapTerms=root=>{root.querySelectorAll("p,li,td,dd,h3,.lab,.ttl").forEach(el=>{if(el.closest("nav,svg,.chips,#tip,.gloss,summary .tag"))return;const seen=new Set();const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".t,code,svg,button")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});const nodes=[];while(w.nextNode())nodes.push(w.currentNode);nodes.forEach(n=>{const s=n.nodeValue;rx.lastIndex=0;if(!rx.test(s))return;rx.lastIndex=0;const f=document.createDocumentFragment();let last=0,m;while(m=rx.exec(s)){const k=m[1];if(seen.has(k))continue;seen.add(k);f.append(s.slice(last,m.index));const b=document.createElement("button");b.className="t";b.type="button";b.dataset.k=k;b.dataset.g=GL[k].g;b.textContent=k;f.append(b);last=m.index+k.length}if(last){f.append(s.slice(last));n.replaceWith(f)}})})};
+wrapTerms(document.body);
+wrapCells();
+document.getElementById("gloss").innerHTML=Object.keys(GL).sort((a,b)=>a.localeCompare(b)).map(k=>`<dt>${k}</dt><dd>${GL[k].d}</dd>`).join("");
+const tip=document.getElementById("tip");let tipFor=null,y0=0;
+const showTip=b=>{const k=b.dataset.k;tip.innerHTML=`<b>${k} — ${GL[k].g}</b>${GL[k].d}`;tip.style.display="block";const r=b.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;let x=Math.min(Math.max(16,r.left),innerWidth-tw-16),y=r.bottom+8;if(y+th>innerHeight-8)y=r.top-th-8;tip.style.left=x+"px";tip.style.top=y+"px";tipFor=b;y0=scrollY;b.setAttribute("aria-describedby","tip")};
+const hideTip=()=>{tip.style.display="none";if(tipFor)tipFor.removeAttribute("aria-describedby");tipFor=null};
+document.addEventListener("click",e=>{const b=e.target.closest(".t");if(b){e.preventDefault();e.stopPropagation();(tipFor===b&&!matchMedia("(hover:hover) and (pointer:fine)").matches)?hideTip():showTip(b)}else hideTip()});
+document.addEventListener("mouseover",e=>{const b=e.target.closest(".t");if(b&&matchMedia("(hover:hover) and (pointer:fine)").matches)showTip(b)});
+document.addEventListener("mouseout",e=>{const b=e.target.closest(".t");if(b&&matchMedia("(hover:hover) and (pointer:fine)").matches&&!b.contains(e.relatedTarget))hideTip()});
+document.addEventListener("focusin",e=>{const b=e.target.closest(".t");if(b&&b.matches(":focus-visible"))showTip(b);else if(!b)hideTip()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hideTip()});
+addEventListener("scroll",()=>{if(tipFor&&Math.abs(scrollY-y0)>40)hideTip()},{passive:true});
+
+const rd=document.getElementById("radar");
+const drawRadar=()=>{const W=rd.clientWidth,H=rd.clientHeight,cx=W/2,cy=H/2,R=Math.min(W,H)/2-(W<420?44:62),N=lenses.length;
+ const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/N;return[cx+Math.cos(a)*r,cy+Math.sin(a)*r]};
+ let s="";[25,50,75,100].forEach(v=>{s+=`<polygon points="${lenses.map((_,i)=>pt(i,R*v/100).join(",")).join(" ")}" fill="none" stroke="var(--line)"/>`});
+ lenses.forEach((_,i)=>{const[x,y]=pt(i,R);s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--line)"/>`});
+ s+=`<polygon points="${lenses.map((l,i)=>pt(i,R*l.s/100).join(",")).join(" ")}" fill="var(--ink)" fill-opacity=".12" stroke="var(--ink)" stroke-width="2"/>`;
+ lenses.forEach((l,i)=>{const[x,y]=pt(i,R*l.s/100);s+=`<circle cx="${x}" cy="${y}" r="${l.s<40?6:4}" fill="${l.s<40?"var(--red)":"var(--ink)"}"/>`;
+  const[lx,ly]=pt(i,R+16);const anc=Math.abs(lx-cx)<8?"middle":lx>cx?"start":"end";
+  s+=`<text x="${lx}" y="${ly+4}" text-anchor="${anc}" fill="${l.s<40?"var(--red)":"var(--mute)"}" font-weight="${l.s<40?700:400}">${l.k}</text>`});
+ s+=`<text x="${cx}" y="${cy-R*.25-4}" text-anchor="middle" fill="var(--mute)">25</text><text x="${cx}" y="${cy-R*.75-4}" text-anchor="middle" fill="var(--mute)">75</text>`;
+ rd.innerHTML=`<svg>${s}</svg>`};
+const roR=new ResizeObserver(drawRadar);roR.observe(rd);
+const mx=document.getElementById("mx");
+const drawMx=()=>{const W=mx.clientWidth,H=mx.clientHeight,m={l:48,r:16,t:16,b:44},pw=W-m.l-m.r,ph=H-m.t-m.b;
+ const X=e=>m.l+(e-.5)/10*pw,Y=i=>m.t+ph-(i-.5)/10*ph,midX=X(5.5),midY=Y(5.5);
+ let s=`<rect x="${m.l}" y="${m.t}" width="${midX-m.l}" height="${midY-m.t}" fill="var(--red)" fill-opacity=".08"/>`;
+ s+=`<line x1="${midX}" y1="${m.t}" x2="${midX}" y2="${m.t+ph}" stroke="var(--mute)" stroke-dasharray="4 4"/><line x1="${m.l}" y1="${midY}" x2="${m.l+pw}" y2="${midY}" stroke="var(--mute)" stroke-dasharray="4 4"/>`;
+ s+=`<line x1="${m.l}" y1="${m.t+ph}" x2="${m.l+pw}" y2="${m.t+ph}" stroke="var(--ink)"/><line x1="${m.l}" y1="${m.t}" x2="${m.l}" y2="${m.t+ph}" stroke="var(--ink)"/>`;
+ const q=[["Швидкі перемоги",m.l+8,m.t+18,"start","var(--red)"],["Великі ставки",m.l+pw-8,m.t+18,"end","var(--mute)"],["Дрібниці",m.l+8,m.t+ph-10,"start","var(--mute)"],["Пастки часу",m.l+pw-8,m.t+ph-10,"end","var(--mute)"]];
+ q.forEach(a=>s+=`<text x="${a[1]}" y="${a[2]}" text-anchor="${a[3]}" fill="${a[4]}" font-weight="700">${a[0]}</text>`);
+ s+=`<text x="${m.l+pw/2}" y="${H-10}" text-anchor="middle" fill="var(--mute)">Зусилля →</text><text transform="translate(16 ${m.t+ph/2}) rotate(-90)" text-anchor="middle" fill="var(--mute)">Вплив →</text>`;
+ const r=W<520?11:14;
+ ops.forEach(o=>{const x=X(o.eff),y=Y(o.I),ex=o.x=="ex",hot=top3.includes(o.id);
+  s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${ex?"var(--bg)":hot?"var(--red)":"var(--ink)"}" stroke="${ex?"var(--red)":"none"}" stroke-width="2.5"/><text x="${x}" y="${y+4.5}" text-anchor="middle" fill="${ex?"var(--red)":"var(--bg)"}" style="stroke:none" font-weight="700">${o.id}</text>`});
+ mx.innerHTML=`<svg>${s}</svg>`};
+const roM=new ResizeObserver(drawMx);roM.observe(mx);
+}
+</script>
+</body>
+
+</html>
