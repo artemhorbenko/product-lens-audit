@@ -1,0 +1,66 @@
+[
+ {
+  "query": "Why does my landing page convert so badly? Here's the URL.",
+  "should_trigger": true
+ },
+ {
+  "query": "Audit our SaaS product and tell me where we lose users",
+  "should_trigger": true
+ },
+ {
+  "query": "чому в мене мало конверсій на сайті?",
+  "should_trigger": true
+ },
+ {
+  "query": "Подивись на мій сайт і скажи, що покращити в першу чергу",
+  "should_trigger": true
+ },
+ {
+  "query": "What growth opportunities do you see in this app? Screenshots attached.",
+  "should_trigger": true
+ },
+ {
+  "query": "Our referral program isn't bringing new customers. What should we change?",
+  "should_trigger": true
+ },
+ {
+  "query": "Review this product's onboarding flow through JTBD and growth loops",
+  "should_trigger": true
+ },
+ {
+  "query": "We're stuck at 200 paying users. What's blocking us?",
+  "should_trigger": true
+ },
+ {
+  "query": "Fix the CSS bug: the button overlaps the footer on mobile",
+  "should_trigger": false
+ },
+ {
+  "query": "Write a blog post about conversion rate optimization",
+  "should_trigger": false
+ },
+ {
+  "query": "What does JTBD stand for?",
+  "should_trigger": false
+ },
+ {
+  "query": "Set up GA4 on my WordPress site",
+  "should_trigger": false
+ },
+ {
+  "query": "пофікси баг у CSS на сторінці реклами",
+  "should_trigger": false
+ },
+ {
+  "query": "Translate this landing page into Ukrainian",
+  "should_trigger": false
+ },
+ {
+  "query": "Review my pull request for the checkout service",
+  "should_trigger": false
+ },
+ {
+  "query": "Make a pitch deck for our seed round",
+  "should_trigger": false
+ }
+]

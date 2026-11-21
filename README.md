@@ -37,7 +37,7 @@ Supporting tools: Lean Analytics stages, AARRR, LIFT, Value Proposition Canvas, 
 2. **Asks up to 4 quick questions**, each one skippable: the main customer, the goal for the quarter, what data you can share, and what you have already tried.
 3. **Walks the product** and reads your data. Dashboard screenshots work too, and it flags polluted analytics such as a high Direct share or bot cities.
 4. **Applies the lenses**, ties every finding to evidence, and prioritizes the findings with ICE.
-5. **Builds the report** from a template, then **checks that it renders** on desktop, tablet and phone (`scripts/check_report.py`) before delivering it.
+5. **Writes the audit as one `audit.json`**, validates it (`scripts/validate_audit.py`: every finding has evidence, every KPI number has a source, the top 3 have alternatives and a pre-mortem), builds the page (`scripts/build_report.py`), then **checks that it renders** on desktop, tablet and phone (`scripts/check_report.py`) before delivering it. Claude writes only data; the template draws everything, so a report costs far fewer tokens.
 
 ## Install
 
@@ -74,14 +74,17 @@ The skill works with just a URL, but evidence makes the plan sharper. Connect wh
 | SEO / market | Ahrefs, Semrush, Similarweb connectors |
 | Support / sales | Intercom, Zendesk, HubSpot - or paste the lost-deal reasons |
 
-## Render check
+## Build and check a report yourself
 
 ```
+S=plugins/product-lens-audit/skills/product-lens-audit
+python $S/scripts/validate_audit.py audit.json          # data and rules, standard library only
+python $S/scripts/build_report.py audit.json report.html
 pip install playwright && playwright install chromium
-python plugins/product-lens-audit/skills/product-lens-audit/scripts/check_report.py report.html --out ./report-check
+python $S/scripts/check_report.py report.html --out ./report-check
 ```
 
-The script fails on page errors, sideways scroll, empty charts, tooltips that don't open on hover or tap, broken phone table cells, and filters that break the table. It also saves screenshots of every view, including dark mode.
+Start from `$S/assets/example-audit.json`; the shape is in `$S/references/audit.schema.json`. The render check fails on page errors, sideways scroll, empty charts, overlapping labels, tooltips that don't open on hover or tap, broken phone table cells, and filters that break the table. It also saves screenshots of every view, including dark mode.
 
 ## Privacy and safety
 
@@ -97,9 +100,16 @@ plugins/product-lens-audit/
   .claude-plugin/plugin.json
   skills/product-lens-audit/
     SKILL.md                           the process
+    references/lenses.md               the 13 lenses and how to score them
+    references/data-sources.md         what to query in each data source, fallbacks, polluted-data signs
     references/report-spec.md          report sections, tooltips, mobile rules
-    assets/report-template.html        finished demo report (fictional "Loopwell")
+    references/audit.schema.json       shape of the report data
+    assets/report-template.html        the report page; renders from one JSON block
+    assets/example-audit.json          full example (fictional "Loopwell")
+    scripts/validate_audit.py          data and rule check
+    scripts/build_report.py            audit.json -> report.html
     scripts/check_report.py            headless render check
+evals/                                 test scenarios, trigger prompts, results log
 docs/                                  screenshots
 product-lens-audit-skill.zip           the skill packaged for upload to the Claude app
 ```

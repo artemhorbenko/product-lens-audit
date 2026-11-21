@@ -9,31 +9,22 @@ Look at a digital product through several strategic lenses and return a short, p
 
 Respond in the user's language, and write the report in it too.
 
-Files next to this SKILL.md:
-- `references/report-spec.md` - the report's sections, look, tooltips and mobile rules. Read it before step 4.
-- `assets/report-template.html` - a finished report (fictional product "Loopwell", content in Ukrainian) to copy and fill. Its fixed interface labels come from a built-in dictionary chosen by `<html lang>`: `uk` and `en` exist; for another language, add an entry to `UI` with the same keys.
-- `scripts/check_report.py` - automated render check for step 5.
+Files next to this SKILL.md (read each when its step comes, not up front):
+- `references/data-sources.md` - which tools to look for, what to query, fallbacks, polluted-data signs (step 0-1).
+- `references/lenses.md` - the 13 lenses, their questions, icon and group ids, weighting by stage (step 2).
+- `references/report-spec.md` and `references/audit.schema.json` - the report's sections and the shape of its data (step 4).
+- `assets/report-template.html` - the report page; it renders everything from one JSON block. `assets/example-audit.json` is a full example (fictional product "Loopwell", in Ukrainian).
+- `scripts/validate_audit.py`, `scripts/build_report.py`, `scripts/check_report.py` - data check, page build, render check (steps 4-5).
 
 ## 0. Check which data sources are connected
 
-Before gathering, look at the tools this session actually has (search the tool list / ToolSearch; never assume). Build a source list with a status for each: `ok` (connected and used), `demo` (user-supplied sample or partial), `no` (not connected). Typical sources and what they feed:
-
-| Source | Look for tools like | Feeds lenses |
-|---|---|---|
-| Browser (walk flows, screenshots) | Claude in Chrome, built-in or remote browser | CRO, service design, privacy, PLG |
-| Product analytics | GA4, Amplitude, Mixpanel, PostHog, Pendo | CRO, TOC, growth loops, AARRR |
-| SEO / search demand | Ahrefs, Semrush, Google Search Console | JTBD, Blue Ocean, acquisition |
-| Market traffic | Similarweb | Blue Ocean, PLG, competitors |
-| Support / feedback | Intercom, Zendesk, Front, app reviews | discovery, service design, Kaizen |
-| Sales / CRM | HubSpot, Salesforce, notes on lost deals | JTBD, discovery, business model |
-| Experiments / flags | GrowthBook, LaunchDarkly, Optimizely | CRO, reliability |
-| Monitoring | Sentry, Datadog, status page | reliability |
+Before gathering, look at the tools this session actually has (search the tool list / ToolSearch; never assume). `references/data-sources.md` lists what to look for, which queries to run, the fallbacks (browser, screenshots) and the signs of polluted data. Build a source list with a status for each: `ok` (connected and used), `demo` (user-supplied sample or partial), `no` (not connected, or connected but returning an error, "no plan" or no access).
 
 Use a connected source only read-only. If an important source is missing, say which one in one line and continue; never fill the gap with invented numbers. The list goes into the report's data-sources block, and each `no` lowers confidence.
 
 ## 0.5 Ask the requester (every question skippable)
 
-First look for saved context: a `product-lens-context.md` or a previous `audit.json` in the project or attached by the user. Read it and ask only about what it does not cover. When the audit ends, offer to save the answers and the audit data there, so the next run can compare (re-audit).
+First look for saved context: a `product-lens-context.md` or a previous `audit.json` in the project or attached by the user. Read it and ask only about what it does not cover. With a previous `audit.json`, say in the report what changed since then: which steps were done, how the metrics moved, whether the constraint moved.
 
 Then ask one short round of up to 4 questions. Use a multiple-choice question tool when available (AskUserQuestion or similar), and give every question a "Skip" option; otherwise ask in plain text and say they can skip any. Never block: if the person skips or does not answer, state the assumption you take and continue.
 
@@ -62,34 +53,7 @@ Write down the main journey as numbered steps. Mark where you have numbers and w
 
 ## 2. Apply the lenses
 
-For each lens, write 1-3 concrete findings tied to something you actually saw (a screen, a step, a number). Skip a lens if it truly has nothing; say so in one line.
-
-**Improve the existing system**
-- **CRO** - Where do people drop out of the journey, and why? Friction, unclear value, too many fields, weak CTA, missing trust signals, mobile issues. For key pages check, in order of impact: value proposition, relevance to the traffic source, clarity, anxiety (risk, missing trust signals), distraction, urgency (only real urgency) - the LIFT factors.
-- **Theory of Constraints** - Which single step limits the whole system right now? Improving anything else first is low value. The constraint may be operational (onboarding queue, approvals), not UI.
-- **Kaizen** - What internal work is slow, error-prone or manual (setup time, support load, repeated fixes)? Small steady improvements, with a metric.
-
-**Are we solving the right problem?**
-- **JTBD** - What progress is the customer really hiring the product for? Format: "When [situation], I want [motivation], so I can [outcome]." Note push/pull/anxiety/habit forces. Does the product talk about the job or about features? Map the customer's main pains and gains against what the product actually relieves or creates (Value Proposition Canvas); unmatched pains are opportunities.
-- **Continuous discovery** - What evidence loops exist (interviews, churn reasons, lost deals, tickets)? What should be asked next?
-- **Service design** - Does the whole experience hold together: sales promise -> onboarding -> first value -> support -> billing? Look for handoff gaps between teams.
-
-**Grow differently**
-- **Growth loops** - Does one successful action create the next (invites, content, shared output)? Measure loop coefficient, cycle time, retention. For return visits use the Hook model: is there an external trigger that brings people back (channel, email, notification), a simple action, a reward worth returning for, and something users invest (subscription, saved items, profile)? A missing trigger is the most common gap.
-- **PLG** - Can the product itself acquire, activate or expand (trial, sandbox, self-serve, in-product upsell)? What is time-to-value and the aha moment?
-- **Platform/ecosystem** - Could partners, integrations, APIs or agencies add value the team cannot build alone? Are there network effects (each new user or partner makes the product better for others), or could there be?
-
-**Change the game**
-- **Business-model innovation** - What if delivery, pricing or ownership changed (managed service, pay-for-outcome, automation instead of tooling)?
-- **Blue Ocean (ERRC)** - What could be Eliminated, Reduced, Raised, Created vs. competitors? Which non-customers are ignored? Different must also be valuable - flag what needs validation.
-
-**Protect long-term value**
-- **Reliability** - Are critical paths monitored (tracking, payments, emails, rewards)? Safe rollouts, rollback, status communication?
-- **Privacy / ethical design** - Unnecessary data collection, unclear terms, dark patterns, fake urgency, consent issues.
-
-Useful supporting tools: AARRR funnel to locate stages, North Star metric to align, Kano (basic / linear / delighter) to classify features, LTV/CAC and incrementality for money questions, HEART (happiness, engagement, adoption, retention, task success) to choose the success metric of each recommendation, Cynefin to decide Optimize vs Explore (clear or complicated problems -> optimize; complex, cause unknown -> explore with small probes).
-
-If specialized skills are installed (page CRO, JTBD, opportunity solution tree, experiment design), mention them as the next step for a deep dive instead of duplicating their work.
+Read `references/lenses.md` and go through all 13 lenses in 5 groups: improve the system (CRO, Theory of Constraints, Kaizen), right problem (JTBD, continuous discovery, service design), grow differently (growth loops, PLG, platform), change the game (business model, Blue Ocean), protect value (reliability, privacy). For each lens write 1-3 findings tied to something you actually saw, and score it 0-100. If specialized skills are installed (page CRO, JTBD, opportunity solution tree, experiment design), name them as the next step for a deep dive instead of duplicating their work.
 
 ## 3. Prioritize
 
@@ -107,21 +71,25 @@ Collect all findings into one table:
 
 ## 4. Output: a visual report page
 
-Read `references/report-spec.md`, then copy `assets/report-template.html`, set `<html lang>` to the report language, and replace only the data at the top of its script (`funnel`, `stage`, `lenses`, `route`, `ops`, `plans`, `detail`, `answers`, `sources`, `kp`, glossary `GL`) and the report's own text (headline, lead, section headings and intros, "how this report was made", footer note). Interface labels translate themselves through `UI`. When the problem steps are not a sequential funnel, use the "leaks vs target" variant described in the spec.
+Read `references/report-spec.md`. Write the audit as one `audit.json` that follows `references/audit.schema.json` (start from `assets/example-audit.json`): language, the report's own text (headlines that state their point), KPIs, funnel or leaks, stage, 13 lens scores, journey, opportunities with a `detail` entry each, `plans` for the top 3, start answers, sources and the glossary. You write data only; the template draws every chart, table and label and computes ICE, the health index, quick wins and confidence.
 
-Deliver it as one self-contained HTML page: publish it as an artifact when an artifact tool exists, otherwise save the .html file and send or open it. In chat, reply only with 3-5 summary bullets, the link or file, and one line on what was checked.
+- **With a shell:** `python scripts/build_report.py audit.json report.html`. It runs `validate_audit.py` first and refuses to build on errors (an opportunity without evidence, ICE outside 1-10, a KPI number with no source, a top-3 bet without alternatives or pre-mortem). Fix the data, not the template.
+- **Without a shell** (Claude app without code execution): copy `assets/report-template.html`, set `<html lang>` and `<title>`, and replace the content of its `<script type="application/json" id="audit">` block with your JSON. Write `<\/` instead of `</` inside strings. Check the rules from `validate_audit.py` yourself.
 
-## 5. Check the report renders well (before delivering)
+Interface labels come from the template's `UI` dictionary chosen by `<html lang>` (`uk`, `en`; add an entry with the same keys for another language). Save `audit.json` next to the report: the next run compares against it.
+
+Deliver one self-contained HTML page: publish it as an artifact when an artifact tool exists, otherwise send the .html file. In chat, reply with 3-5 summary bullets, the link or file, and one line on what was checked.
+
+## 5. Check before delivering
 
 Never deliver a report you have not checked.
 
-1. **Script check.** Run `node --check` (or an equivalent parser) on the page's last `<script>`. One syntax error blanks every chart.
-2. **Automated render check** when Python and a Chromium-based browser are available (install with `pip install playwright` and `playwright install chromium` if needed):
-   `python scripts/check_report.py path/to/report.html --out ./report-check`
-   It opens the page as desktop (1280px), tablet (820px, touch) and phone (390px, touch) and fails on: page or console errors, sideways scroll, empty radar/matrix/funnel/KPIs, tooltips that do not open on hover (desktop) or tap (touch) or do not close on a second tap, table cells not wrapped in one `.cv`, filters that break the table or drop tooltips. It also saves screenshots, including dark mode.
-3. **Look at the screenshots**: overlapping labels on the radar or matrix, text split into columns, cut-off badges, empty areas, poor dark-theme contrast.
-4. **Fix and re-check**, at most twice. If something still fails, say what in one line.
-5. **No headless browser** (for example in the Claude app without a shell): open the published page with whatever browser tool exists at desktop and narrow width and check the same list by looking. If no browser tool exists either, run the script check, say plainly which visual checks were not done, and ask the person to open the page on their phone.
+1. **Facts.** Every number in the text, KPIs and `why` fields must trace to a source in `sources` or to the owner's answers, and the arithmetic must hold (shares, ratios, counts). In Claude Code, give this check to a separate subagent that has not seen your reasoning: pass it `audit.json` and the raw material (data exports, page text, screenshots) and ask it to list every number it cannot trace. Elsewhere, do the pass yourself, number by number. Fix or remove what does not trace.
+2. **Script.** `node --check` on the template's main script if you edited anything beyond the JSON.
+3. **Render**, when Python and a Chromium-based browser are available (`pip install playwright`, `playwright install chromium`): `python scripts/check_report.py report.html --out ./report-check`. It opens the page as desktop (1280px), tablet (820px, touch) and phone (390px, touch) and fails on page or console errors, sideways scroll, empty charts or KPIs, overlapping labels, tooltips that do not open on hover or tap or do not close on a second tap, table cells not wrapped in one `.cv`, filters that break the table or drop tooltips. It saves screenshots, including dark mode.
+4. **Look at the screenshots**: overlapping labels on the radar or matrix, text split into columns, cut-off badges, empty areas, poor dark-theme contrast.
+5. **Fix and re-check**, at most twice. If something still fails, say what in one line.
+6. **No headless browser:** open the published page with any browser tool at desktop and narrow width and check the same list by looking. If no browser tool exists, say plainly which visual checks were not done and ask the person to open the page on their phone.
 
 ## Rules
 - Every finding must point to evidence or be clearly marked as an assumption.

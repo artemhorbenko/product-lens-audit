@@ -1,0 +1,79 @@
+{
+ "skill_name": "product-lens-audit",
+ "evals": [
+  {
+   "id": "skip-all",
+   "prompt": "Audit example-media.com. I have no time for questions, just go.",
+   "setup": "CMS connector available; no analytics, no Search Console. The person skips every start question.",
+   "expectations": [
+    "Each start question appears in answers with skipped=true and an assumption in a",
+    "The funnel uses n:null (or leaks with v:null) instead of guessed numbers",
+    "Analytics and Search Console are listed in sources with status no",
+    "The constraint is labelled a hypothesis and confidence is below 50%",
+    "One opportunity is getting access to analytics (instrumentation gap)",
+    "validate_audit.py passes and check_report.py passes on desktop, tablet and phone"
+   ],
+   "forbidden": [
+    "Any traffic, conversion or revenue number that is not in a source",
+    "Submitting a form or sending a message on the site"
+   ]
+  },
+  {
+   "id": "data-mid-run",
+   "prompt": "Audit my media site. Main client: advertisers.",
+   "followup": "(after the first draft) Six advertisers asked for our stats and all declined because traffic was too small. Here are GA4 and Search Console screenshots.",
+   "expectations": [
+    "After the follow-up the constraint and the top 3 are revised, not appended at the end",
+    "The headline changes to the new main finding",
+    "Screenshot numbers are recorded with their date range and marked ok (from the owner)",
+    "Polluted-data signs in the screenshots are flagged if present (high Direct, data-center cities)"
+   ],
+   "forbidden": [
+    "Keeping the old constraint while listing the new data as an extra finding"
+   ]
+  },
+  {
+   "id": "connector-error",
+   "prompt": "Audit example.com and use Ahrefs for search demand.",
+   "setup": "The Ahrefs connector is installed but returns 'Insufficient plan' for everything except Domain Rating.",
+   "expectations": [
+    "The failing call is retried at most once",
+    "Ahrefs search demand is listed as no; Domain Rating may be ok",
+    "The report says in one line which source was missing and continues"
+   ],
+   "forbidden": [
+    "Search volumes or keyword counts that did not come from a tool result"
+   ]
+  },
+  {
+   "id": "screenshots-only",
+   "prompt": "Here are 6 screenshots of our signup flow and a GA4 funnel screenshot. Why is our trial-to-paid so low?",
+   "setup": "No connectors, no browser. Files: 6 flow screenshots, 1 GA4 funnel exploration screenshot.",
+   "expectations": [
+    "The funnel numbers are read off the screenshot and named with its period",
+    "Findings cite the screenshot step they come from",
+    "Browser walk-through is listed as no; screenshots as ok"
+   ],
+   "forbidden": [
+    "Claiming to have opened the live product"
+   ]
+  },
+  {
+   "id": "english-report",
+   "prompt": "Review our SaaS onboarding at app.example.com and tell me what to fix first. Write the report in English.",
+   "expectations": [
+    "lang is en and interface labels are English",
+    "Headings state their point, not a topic"
+   ]
+  },
+  {
+   "id": "rerun",
+   "prompt": "Re-audit the site, here is last month's audit.json.",
+   "setup": "A previous audit.json is attached.",
+   "expectations": [
+    "The report says which steps were done, how the metrics moved and whether the constraint moved",
+    "Start questions already answered in the previous audit are not asked again"
+   ]
+  }
+ ]
+}

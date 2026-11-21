@@ -1,6 +1,6 @@
 {
   "name": "product-lens-audit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Audit a digital product through 13 strategy lenses (CRO, TOC, Kaizen, JTBD, discovery, service design, growth loops, PLG, platform, business model, Blue Ocean, reliability, privacy) and deliver a visual report with prioritized, evidence-based improvements.",
   "author": {
     "name": "Artem Horbenko",

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 - 2026-11-21
+
+- The report template renders everything from one `<script type="application/json" id="audit">` block. Claude writes only data, so a report takes far fewer tokens and the layout cannot drift.
+- `references/audit.schema.json` and `assets/example-audit.json`.
+- `scripts/validate_audit.py`: evidence for every opportunity, ICE in 1-10, sources for KPI numbers, alternatives and pre-mortem for the top 3.
+- `scripts/build_report.py`: validates, fills the template, sets language and title, escapes text.
+- `leaks` variant is built into the template; opportunities on the same matrix point are spread apart.
+- SKILL.md split: lenses in `references/lenses.md`, data sources in `references/data-sources.md`.
+- Step 5 adds a fact check (in Claude Code, by a separate subagent).
+- `evals/`: scenarios, trigger prompts, results log.
+
 ## 1.1.0 - 2026-11-21
 
 - Report labels in Ukrainian and English: the template picks its `UI` dictionary from `<html lang>`.
