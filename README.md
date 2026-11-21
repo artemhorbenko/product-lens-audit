@@ -33,7 +33,7 @@ Each lens asks a different question. The value is in seeing what one lens misses
 - **Prioritizing and planning:** ICE scoring, observed vs hypothesis labels, opportunity solution tree, experiment risk types (value, usability, viability, feasibility), success thresholds, pre-mortem, instrumentation gaps.
 - **Journey:** service blueprint.
 
-![Report header: the constraint, KPIs, funnel and product stage](docs/report-desktop.png)
+![Report header: the constraint, KPIs, funnel and product stage](docs/report-desktop-en.png)
 
 ## What you get
 
@@ -46,8 +46,8 @@ Each lens asks a different question. The value is in seeing what one lens misses
 - **Honest confidence**: which data sources were used, which were missing, and the answers to the start questions.
 
 <p>
-<img src="docs/report-plan.png" alt="Full plan with alternatives, experiment and pre-mortem" width="62%">
-<img src="docs/report-phone-tooltip.png" alt="Tooltip on a phone" width="30%">
+<img src="docs/report-plan-en.png" alt="Full plan with alternatives, experiment and pre-mortem" width="62%">
+<img src="docs/report-phone-tooltip-en.png" alt="Tooltip on a phone" width="30%">
 </p>
 
 ## How it works
