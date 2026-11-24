@@ -15,6 +15,7 @@ Files next to this SKILL.md (read each when its step comes, not up front):
 - `references/report-spec.md` and `references/audit.schema.json` - the report's sections and the shape of its data (step 4).
 - `assets/report-template.html` - the report page; it renders everything from one JSON block. `assets/example-audit.json` is a full example (fictional product "Loopwell", in Ukrainian).
 - `scripts/validate_audit.py`, `scripts/build_report.py`, `scripts/check_report.py` - data check, page build, render check (steps 4-5).
+- `scripts/build_handoff.py` - the same audit as a Markdown brief (and optional tasks.json) for an AI agent or developer to implement.
 
 ## 0. Check which data sources are connected
 
@@ -77,6 +78,8 @@ Read `references/report-spec.md`. Write the audit as one `audit.json` that follo
 - **Without a shell** (Claude app without code execution): copy `assets/report-template.html`, set `<html lang>` and `<title>`, and replace the content of its `<script type="application/json" id="audit">` block with your JSON. Write `<\/` instead of `</` inside strings. Check the rules from `validate_audit.py` yourself.
 
 Interface labels come from the template's `UI` dictionary chosen by `<html lang>` (`uk`, `en`; add an entry with the same keys for another language). Save `audit.json` next to the report: the next run compares against it.
+
+**Hands-off file.** Also build a plain Markdown brief for whoever will implement the plan, often another AI agent: `python scripts/build_handoff.py audit.json handoff.md --json tasks.json`. It holds context, sources, rules for the implementer and every opportunity as a task in priority order with evidence, steps, acceptance criteria, how to verify, risks and dependencies. Add `accept`, `depends` and `verify` to `detail` entries and top-level `rules` in `audit.json` when the defaults are not specific enough. Without a shell, write the same structure by hand. Deliver it next to the report as a file (not an artifact), and say in one line what it is for.
 
 Deliver one self-contained HTML page: publish it as an artifact when an artifact tool exists, otherwise send the .html file. In chat, reply with 3-5 summary bullets, the link or file, and one line on what was checked.
 

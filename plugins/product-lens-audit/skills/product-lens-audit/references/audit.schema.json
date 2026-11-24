@@ -440,6 +440,24 @@
       "items": {
        "type": "string"
       }
+     },
+     "accept": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Acceptance criteria for the hands-off file. If missing, thr and metric are used."
+     },
+     "depends": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Task ids this one depends on, e.g. [\"T04\"]."
+     },
+     "verify": {
+      "type": "string",
+      "description": "How to check the task is done when it has no plan entry."
      }
     }
    }
@@ -509,6 +527,13 @@
      }
     }
    }
+  },
+  "rules": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "Optional rules for whoever implements the plan; shown in the hands-off file. Defaults apply when missing."
   }
  }
 }

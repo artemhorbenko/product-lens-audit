@@ -57,6 +57,7 @@ Each lens asks a different question. The value is in seeing what one lens misses
 3. **Walks the product** and reads your data. Dashboard screenshots work too, and it flags polluted analytics such as a high Direct share or bot cities.
 4. **Applies the lenses**, ties every finding to evidence, and prioritizes the findings with ICE.
 5. **Writes the audit as one `audit.json`**, validates it (`scripts/validate_audit.py`: every finding has evidence, every KPI number has a source, the top 3 have alternatives and a pre-mortem), builds the page (`scripts/build_report.py`), then **checks that it renders** on desktop, tablet and phone (`scripts/check_report.py`) before delivering it. Claude writes only data; the template draws everything, so a report costs far fewer tokens.
+6. **Writes a hands-off file** (`scripts/build_handoff.py`): the same audit as plain Markdown for an AI agent or developer to implement — context, rules, and every opportunity as a task with evidence, steps, acceptance criteria, how to verify and dependencies. Optional `tasks.json` for a tracker. Example: `assets/example-handoff.en.md`.
 
 ## Install
 
@@ -99,6 +100,7 @@ The skill works with just a URL, but evidence makes the plan sharper. Connect wh
 S=plugins/product-lens-audit/skills/product-lens-audit
 python $S/scripts/validate_audit.py audit.json          # data and rules, standard library only
 python $S/scripts/build_report.py audit.json report.html
+python $S/scripts/build_handoff.py audit.json handoff.md --json tasks.json
 pip install playwright && playwright install chromium
 python $S/scripts/check_report.py report.html --out ./report-check
 ```
@@ -128,6 +130,7 @@ plugins/product-lens-audit/
     scripts/validate_audit.py          data and rule check
     scripts/build_report.py            audit.json -> report.html
     scripts/check_report.py            headless render check
+    scripts/build_handoff.py           audit.json -> handoff.md (+ tasks.json) for AI agents
 evals/                                 test scenarios, trigger prompts, results log
 docs/                                  screenshots
 product-lens-audit-skill.zip           the skill packaged for upload to the Claude app

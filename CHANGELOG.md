@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 - 2026-11-24
+
+- Hands-off file for AI agents: `scripts/build_handoff.py` turns audit.json into a Markdown brief (context, sources, rules, tasks with evidence, steps, acceptance criteria, how to verify, dependencies) and an optional tasks.json. Tasks are ordered by ICE, and dependencies always come first.
+- audit.json gains optional `rules`, and `accept`, `depends`, `verify` in `detail` entries.
+- Example: `assets/example-handoff.en.md`.
+
 ## 1.2.1 - 2026-11-21
 
 - Rates under 0.1% show with one significant digit (0.006%) instead of "0%".
