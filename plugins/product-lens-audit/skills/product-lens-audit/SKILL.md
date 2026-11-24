@@ -21,6 +21,8 @@ Files next to this SKILL.md (read each when its step comes, not up front):
 
 Before gathering, look at the tools this session actually has (search the tool list / ToolSearch; never assume). `references/data-sources.md` lists what to look for, which queries to run, the fallbacks (browser, screenshots) and the signs of polluted data. Build a source list with a status for each: `ok` (connected and used), `demo` (user-supplied sample or partial), `no` (not connected, or connected but returning an error, "no plan" or no access).
 
+Audit the production domain the person named. Pages found through search on other subdomains (get., staging., test., lp., go.) may be A/B tests, staging or old landing pages: do not treat them as the product, and if one matters, ask whether it is live and mention it separately.
+
 Use a connected source only read-only. If an important source is missing, say which one in one line and continue; never fill the gap with invented numbers. The list goes into the report's data-sources block, and each `no` lowers confidence.
 
 ## 0.5 Ask the requester (every question skippable)

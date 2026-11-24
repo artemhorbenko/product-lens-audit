@@ -2,6 +2,8 @@
 
 ## 1.3.0 - 2026-11-24
 
+- Audit only the production domain; pages on other subdomains found via search (get., staging., lp.) are not treated as the product.
+
 - Hands-off file for AI agents: `scripts/build_handoff.py` turns audit.json into a Markdown brief (context, sources, rules, tasks with evidence, steps, acceptance criteria, how to verify, dependencies) and an optional tasks.json. Tasks are ordered by ICE, and dependencies always come first.
 - audit.json gains optional `rules`, and `accept`, `depends`, `verify` in `detail` entries.
 - Example: `assets/example-handoff.en.md`.
